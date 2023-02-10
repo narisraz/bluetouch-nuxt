@@ -5,6 +5,8 @@ module.exports = {
     colors: {
       primary: '#6750A4',
       'on-primary': '#FFFFFF',
+      'primary-container': '#EADDFF',
+      'on-primary-container': '#21005D',
       'secondary': '#625B71',
       'on-secondary': '#FFFFFF',
       error: '#B3261E',
