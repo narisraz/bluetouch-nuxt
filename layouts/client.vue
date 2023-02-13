@@ -9,7 +9,7 @@
           </template>
           Système d'Alimentation en Eau Potable (SAEP)
         </DrawerMenuItem>
-        <DrawerMenuItem>
+        <DrawerMenuItem path="/dashboard">
           <template #icon>
             <IconHome />
           </template>
