@@ -15,7 +15,7 @@ module.exports = {
       'on-surface': '#1C1B1F',
       'surface-variant': '#E7E0EC',
       'on-surface-variant': '#49454F',
-      background: '#FFFFFF',
+      background: '#ECEEFF',
       'on-background': '#1C1B1F'
     },
     extend: {},
