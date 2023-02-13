@@ -19,7 +19,11 @@
       </tr>
       <tr>
         <td class="border-b-[1px] p-2 font-semibold">Localisation sur la carte</td>
-        <td class="border-b-[1px]"></td>
+        <td class="border-b-[1px]">
+          <NuxtLink to="/" class="text-primary">
+            <IconArrowTopRightOnSquare />
+          </NuxtLink>
+        </td>
       </tr>
       <tr>
         <td class="border-b-[1px] p-2 font-semibold">Ressource en eau</td>
