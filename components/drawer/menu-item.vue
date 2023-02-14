@@ -22,6 +22,6 @@ defineProps({
 
 <style>
 .router-link-active {
-  @apply bg-primary text-on-primary
+  @apply bg-primary text-on-primary hover:bg-primary hover:text-on-primary hover:cursor-default
 }
 </style>

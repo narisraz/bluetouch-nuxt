@@ -1,7 +1,7 @@
 <template>
   <table class="table-auto border-spacing-3 w-full bg-surface text-on-surface">
     <tbody>
-      <tr class="p-8">
+      <tr>
         <td class="border-b-2 border-background py-2 px-3 font-semibold">Nom de la commune</td>
         <td class="border-b-2 border-background">Sabotsy Namehana</td>
       </tr>

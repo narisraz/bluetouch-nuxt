@@ -15,7 +15,7 @@
           </template>
           Indicateurs techniques et financiers
         </DrawerMenuItem>
-        <DrawerMenuItem>
+        <DrawerMenuItem path="/clients">
           <template #icon>
             <IconHome />
           </template>
@@ -63,7 +63,7 @@
     <div class="w-full">
       <div class="flex justify-between py-4 px-4 w-full bg-surface text-on-surface">
         <div class="font-bold">
-          Indicateurs techniques et financiers
+          SAEP Sabotsy Namehana
         </div>
         <div>
           Naris Razafimahatratra
