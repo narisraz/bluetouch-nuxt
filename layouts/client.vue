@@ -21,10 +21,10 @@
           </template>
           Clients
           <template #child>
-            <DrawerMenuItem path="/clients">
+            <DrawerMenuItem path="/clients" is-child>
               Liste des clients
             </DrawerMenuItem>
-            <DrawerMenuItem path="/clients/new">
+            <DrawerMenuItem path="/clients/new" is-child>
               Nouveau client
             </DrawerMenuItem>
           </template>

@@ -1,6 +1,6 @@
 <template>
   <li>
-    <div @click="toggleChild">
+    <div @click="toggleChild" class="relative">
       <NuxtLink :to="path" class="flex cursor-pointer justify-between p-4 rounded-md hover:bg-primary-container hover:text-on-primary-container">
         <div class="flex space-x-4">
           <div class="w-6" v-if="$slots.icon">
@@ -15,6 +15,7 @@
           <IconChevronUp v-else />
         </div>
       </NuxtLink>
+      <div class="-left-[1.1rem] top-6 absolute w-[1.1rem] h-2 border-b-2 border-l-2 border-surface-variant rounded-bl-lg" :class="{ 'hidden': !isChild }" ></div>
     </div>
     <div class="ml-7 pl-4 border-l-2 border-surface-variant" :class="{ 'hidden' : !showChild }">
       <slot name="child"></slot>
@@ -27,6 +28,10 @@ defineProps({
   path: {
     type: String,
     required: true
+  },
+  isChild: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -39,6 +44,6 @@ function toggleChild() {
 
 <style>
 .router-link-active, .router-link-exact-active {
-  @apply bg-primary text-on-primary hover:bg-primary hover:text-on-primary hover:cursor-default
+  @apply bg-surface-variant text-on-surface-variant hover:bg-surface-variant hover:text-on-surface-variant hover:cursor-default
 }
 </style>
