@@ -1,5 +1,5 @@
 <template>
-  <div class="shadow-md p-4 bg-surface text-on-surface">
+  <div class="p-4 bg-surface text-on-surface">
     <slot></slot>
   </div>
 </template>
