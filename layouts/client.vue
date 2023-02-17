@@ -1,6 +1,6 @@
 <template>
   <div class="flex">
-    <div class="w-72 bg-surface text-on-surface h-screen p-4 border border-r-2 border-background overflow-y-scroll">
+    <div class="w-96 bg-surface text-on-surface h-screen p-4 border border-r-2 border-background overflow-y-auto">
       <div class="font-bold text-lg mb-4">Bluetouch</div>
       <ul>
         <DrawerMenuItem path="/home">
@@ -21,12 +21,14 @@
           </template>
           Clients
           <template #child>
-            <DrawerMenuItem path="/clients" is-child>
+            <ul>
+              <DrawerMenuItem path="/clients" is-child>
               Liste des clients
-            </DrawerMenuItem>
-            <DrawerMenuItem path="/clients/new" is-child>
-              Nouveau client
-            </DrawerMenuItem>
+              </DrawerMenuItem>
+              <DrawerMenuItem path="/clients/new" is-child>
+                Nouveau client
+              </DrawerMenuItem>
+            </ul>
           </template>
         </DrawerMenuItem>
         <DrawerMenuItem>
@@ -34,6 +36,16 @@
             <IconHome />
           </template>
           Compteurs
+          <template #child>
+            <ul>
+              <DrawerMenuItem path="/compteurs" is-child>
+                Liste des compteurs
+              </DrawerMenuItem>
+              <DrawerMenuItem path="/compteurs/new" is-child>
+                Nouveau compteur
+              </DrawerMenuItem>
+            </ul>
+          </template>
         </DrawerMenuItem>
         <DrawerMenuItem>
           <template #icon>

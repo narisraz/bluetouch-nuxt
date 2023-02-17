@@ -4,9 +4,7 @@
       <div class="text-on-background uppercase font-bold">Liste des clients (1)</div>
       <NuxtLink to="/clients/new">
         <Button class="bg-secondary text-on-secondary flex space-x-2 hover:bg-secondary/75">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-          </svg>
+          <IconPlus />
           <div>
             Nouveau
           </div>
