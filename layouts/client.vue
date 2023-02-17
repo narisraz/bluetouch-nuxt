@@ -47,7 +47,7 @@
             </ul>
           </template>
         </DrawerMenuItem>
-        <DrawerMenuItem>
+        <DrawerMenuItem path="/releve-index">
           <template #icon>
             <IconHome />
           </template>
