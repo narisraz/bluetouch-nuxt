@@ -76,6 +76,16 @@
             <IconHome />
           </template>
           Tarifs
+          <template #child>
+            <ul>
+              <DrawerMenuItem path="/tarifs" is-child>
+                Liste des tarifs
+              </DrawerMenuItem>
+              <DrawerMenuItem path="/tarifs/new" is-child>
+                Nouveau tarif
+              </DrawerMenuItem>
+            </ul>
+          </template>
         </DrawerMenuItem>
       </ul>
     </div>
