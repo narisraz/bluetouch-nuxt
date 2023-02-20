@@ -53,7 +53,7 @@
           </template>
           Relevé indexe
         </DrawerMenuItem>
-        <DrawerMenuItem>
+        <DrawerMenuItem path="/encaissement">
           <template #icon>
             <IconHome />
           </template>

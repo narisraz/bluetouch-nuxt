@@ -1,7 +1,6 @@
 <template>
   <div>
-    <div class="text-on-background uppercase font-bold mb-4">Nouveau compteur</div>
-    <ContainerCard>
+    <ContainerCard title="Nouveau compteur">
       <form class="space-y-4">
         <div class="grid grid-cols-2 gap-4">
           <FormTextfield type="text" name="identifiant" label="Identifiant" placeholder="Entrez l'identifiant du compteur" />
