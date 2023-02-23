@@ -39,6 +39,10 @@
 </template>
 
 <script setup lang="ts">
+useHead({
+  title: "Connexion"
+})
+
 const { login } = useStrapiAuth()
 const email = ref('')
 const password = ref('')
