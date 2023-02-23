@@ -4,30 +4,51 @@
       <div class="text-5xl font-bold my-8">
         Login
       </div>
-      <div class="space-y-4">
-        <FormTextfield label="Email" name="email" type="email" placeholder="Entrez votre adresse email">
-          <template #prefixIcon>
-            <IconLockClosed class="w-4 h-4" />
-          </template>
-        </FormTextfield>
-
-        <div>
-          <FormTextfield label="Mot de passe" name="password" type="password" placeholder="Entrez votre mot de passe">
+      <form @submit.prevent="onSubmit" method="post">
+        <div class="space-y-4">
+          <FormTextfield v-model="email" label="Email" name="email" type="email" placeholder="Entrez votre adresse email">
             <template #prefixIcon>
-              <IconPerson class="w-4 h-4" />
+              <IconLockClosed class="w-4 h-4" />
             </template>
           </FormTextfield>
-          <NuxtLink to="/forgot-password">
-            <div class="text-right text-primary">
-              Mot de passe oublié ?
-            </div>
-          </NuxtLink>
+  
+          <div>
+            <FormTextfield v-model="password" label="Mot de passe" name="password" type="password" placeholder="Entrez votre mot de passe" :autocomplete=true>
+              <template #prefixIcon>
+                <IconPerson class="w-4 h-4" />
+              </template>
+            </FormTextfield>
+            <NuxtLink to="/forgot-password">
+              <div class="text-right text-primary">
+                Mot de passe oublié ?
+              </div>
+            </NuxtLink>
+          </div>
+  
+          <Button type="submit" class="bg-primary text-on-primary">
+            Se connecter
+          </Button>
         </div>
-
-        <Button class="bg-primary text-on-primary">
-        Se connecter
-        </Button>
-      </div>
+      </form>
     </ContainerCard>
   </div>
 </template>
+
+<script setup lang="ts">
+const { login } = useStrapiAuth()
+const email = ref('')
+const password = ref('')
+
+const onSubmit = async () => {
+  try {
+    await login({
+      identifier: email.value,
+      password: password.value
+    })
+
+    return navigateTo('/home')
+  } catch (e) {
+    console.error(e)
+  }
+}
+</script>
