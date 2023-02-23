@@ -3,45 +3,45 @@
     <tbody>
       <tr>
         <td class="border-b-2 border-background py-2 px-3 font-semibold">Nom de la commune</td>
-        <td class="border-b-2 border-background">Sabotsy Namehana</td>
+        <td class="border-b-2 border-background">{{ adresse.data.attributes.commune }}</td>
       </tr>
       <tr>
         <td class="border-b-2 border-background py-2 px-3 font-semibold">Nombre de population</td>
-        <td class="border-b-2 border-background">20 000</td>
+        <td class="border-b-2 border-background">{{ Intl.NumberFormat().format(saep.data.attributes.nombre_population) }}</td>
       </tr>
       <tr>
         <td class="border-b-2 border-background py-2 px-3 font-semibold">District</td>
-        <td class="border-b-2 border-background">Avaradrano</td>
+        <td class="border-b-2 border-background">{{ adresse.data.attributes.district }}</td>
       </tr>
       <tr>
         <td class="border-b-2 border-background py-2 px-3 font-semibold">Région</td>
-        <td class="border-b-2 border-background">Analamanga</td>
+        <td class="border-b-2 border-background">{{ adresse.data.attributes.region }}</td>
       </tr>
       <tr>
         <td class="border-b-2 border-background py-2 px-3 font-semibold">Localisation sur la carte</td>
         <td class="border-b-2 border-background">
-          <NuxtLink to="/" class="text-primary">
+          <NuxtLink :to="`https://www.google.com/maps/search/?api=1&query=${adresse.data.attributes.latitude},${adresse.data.attributes.longitude}`" target="_blank" class="text-primary">
             <IconArrowTopRightOnSquare />
           </NuxtLink>
         </td>
       </tr>
       <tr>
-        <td class="border-b-2 border-background py-2 px-3 font-semibold">Ressource en eau</td>
-        <td class="border-b-2 border-background">source de montagne, réservoir, rivière</td>
+        <td class="border-b-2 border-background py-2 px-3 font-semibold">Ressources en eau</td>
+        <td class="border-b-2 border-background">{{ ressourcesEnEau }}</td>
       </tr>
       <tr>
         <td class="border-b-2 border-background py-2 px-3 font-semibold">Nombre de réservoir</td>
-        <td class="border-b-2 border-background">2</td>
+        <td class="border-b-2 border-background">{{ saep.data.attributes.nombre_reservoir }}</td>
       </tr>
       <tr>
         <td class="border-b-2 border-background py-2 px-3 font-semibold">Capacité total réservoir (m3)</td>
-        <td class="border-b-2 border-background">150</td>
+        <td class="border-b-2 border-background">{{ saep.data.attributes.capacite }}</td>
       </tr>
     </tbody>
   </table>
 </template>
 
-<script setup>
+<script setup lang="ts">
 definePageMeta({
   middleware: 'auth',
   layout: 'client'
@@ -50,4 +50,35 @@ definePageMeta({
 useHead({
   title: "Système d'Alimentation en Eau Potable (SAEP)"
 })
+
+const { find, findOne } = useStrapi()
+const user = useStrapiUser()
+
+const userDetailResponse = await find<UserDetail>('user-details', {
+  filters: {
+    user: user.value?.id
+  },
+  populate: {
+    saep: true,
+  }
+})
+
+const saepId = userDetailResponse.data.at(0)?.attributes.saep.data.id
+
+const saep = await findOne<Saep>('saeps', saepId, {
+  populate: {
+    adresse: true,
+    ressources_en_eau: true
+  }
+})
+
+const ressourcesEnEau = saep.data.attributes.ressources_en_eau.data
+  .map(val => val.attributes.label)
+  .join(', ')
+
+const adresse = saep.data.attributes.adresse
+
+const latitude = adresse.data.attributes.latitude
+const longitude = adresse.data.attributes.longitude
+console.debug(latitude)
 </script>

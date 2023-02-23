@@ -20,8 +20,8 @@ declare global {
     region: string
     district: string
     commune: string
-    longitude: number
-    latitude: number
+    longitude: string
+    latitude: string
   }
 
   interface UserDetail {

@@ -110,7 +110,6 @@
 <script setup lang="ts">
 const { find, findOne } = useStrapi()
 const user = useStrapiUser()
-console.debug(JSON.stringify(user.value))
 
 const userDetailResponse = await find<UserDetail>('user-details', {
   filters: {
