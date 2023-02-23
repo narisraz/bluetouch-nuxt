@@ -6,6 +6,10 @@
       </div>
       <form @submit.prevent="onSubmit" method="post">
         <div class="space-y-4">
+          <ContainerAlertError v-if="showAlert">
+            Email ou mot de passe erroné
+          </ContainerAlertError>
+
           <FormTextfield v-model="email" label="Email" name="email" type="email" placeholder="Entrez votre adresse email">
             <template #prefixIcon>
               <IconLockClosed class="w-4 h-4" />
@@ -38,6 +42,7 @@
 const { login } = useStrapiAuth()
 const email = ref('')
 const password = ref('')
+const showAlert = ref(false)
 
 const onSubmit = async () => {
   try {
@@ -48,7 +53,7 @@ const onSubmit = async () => {
 
     return navigateTo('/home')
   } catch (e) {
-    console.error(e)
+    showAlert.value = true
   }
 }
 </script>
