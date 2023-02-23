@@ -93,10 +93,10 @@
     <div class="w-full">
       <div class="flex justify-between py-4 px-4 w-full bg-surface text-on-surface">
         <div class="font-bold">
-          SAEP Sabotsy Namehana
+          SAEP {{ saep.data.attributes.adresse.data.attributes.commune }}
         </div>
         <div>
-          Naris Razafimahatratra
+          {{ user?.username }}
         </div>
       </div>
   
@@ -106,3 +106,26 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+const { find, findOne } = useStrapi()
+const user = useStrapiUser()
+console.debug(JSON.stringify(user.value))
+
+const userDetailResponse = await find<UserDetail>('user-details', {
+  filters: {
+    user: user.value?.id
+  },
+  populate: {
+    saep: true,
+  }
+})
+
+const saepId = userDetailResponse.data.at(0)?.attributes.saep.data.id
+
+const saep = await findOne<Saep>('saeps', saepId, {
+  populate: {
+    adresse: true
+  }
+})
+</script>
