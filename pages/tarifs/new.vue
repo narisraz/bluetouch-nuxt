@@ -3,7 +3,7 @@
     <ContainerCard title="Nouveau tarif">
       <form class="space-y-4">
         <div class="grid grid-cols-2 gap-4">
-          <FormSelect :options="branchements" label="Branchement" />
+          <FormSelect name="branchement" :options="branchements" label="Branchement" />
         </div>
         <div class="grid grid-cols-2 gap-4">
           <FormTextfield type="text" name="basePrice" label="Prix de base" placeholder="Entrez le prix de base" />
@@ -31,11 +31,13 @@
 <script setup>
 definePageMeta({
   layout: 'client',
+  middleware: 'auth'
 })
 
 useHead({
   title: "Nouveau tarif"
 })
+
 
 const branchements = [
   { label: "Branchement privé", value: 1 },
