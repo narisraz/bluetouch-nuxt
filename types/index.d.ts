@@ -45,6 +45,11 @@ declare global {
     saep: Strapi4ResponseSingle<Saep> | number
   }
 
+  interface Compteur {
+    identifiant: string
+    saep: Strapi4ResponseSingle<Saep> | number
+  }
+
   interface Option {
     label: string,
     value: string
