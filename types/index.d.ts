@@ -22,6 +22,8 @@ declare global {
     commune: string
     longitude: string
     latitude: string
+    rue: string
+    adresse: string
   }
 
   interface UserDetail {
@@ -45,16 +47,21 @@ declare global {
     saep: Strapi4ResponseSingle<Saep> | number
   }
 
+  interface EtatBranchement {
+    label: string
+    code: string
+  }
+
   interface Client {
     num_contrat: string
     nom: string
     prenom: string
     tel: string
     email: string
-    branchement: Strapi4ResponseSingle<Branchement>
-    adresse: Strapi4ResponseSingle<Adresse>
-    compteur: Strapi4ResponseSingle<Compteur>
-    tarif: Strapi4ResponseSingle<Tarif>
+    etat_branchement: Strapi4ResponseSingle<EtatBranchement> | number
+    branchement: Strapi4ResponseSingle<Branchement> | number
+    adresse: Strapi4ResponseSingle<Adresse> | number
+    compteur: Strapi4ResponseSingle<Compteur> | number
   }
 
   interface Compteur {
