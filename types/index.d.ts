@@ -27,4 +27,25 @@ declare global {
   interface UserDetail {
     saep: Strapi4ResponseSingle<Saep>
   }
+
+  interface Branchement {
+    id: string
+    label: string
+  }
+
+  interface Tarif {
+    prix_base: number
+    prix_1: number
+    volume_1: number
+    prix_2: number
+    volume_2: number
+    prix_3: number
+    volume_3: number
+    branchement: Strapi4ResponseSingle<Branchement> | number
+  }
+
+  interface Option {
+    label: string,
+    value: string
+  }
 }
