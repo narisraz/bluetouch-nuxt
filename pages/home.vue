@@ -77,8 +77,4 @@ const ressourcesEnEau = saep.data.attributes.ressources_en_eau.data
   .join(', ')
 
 const adresse = saep.data.attributes.adresse
-
-const latitude = adresse.data.attributes.latitude
-const longitude = adresse.data.attributes.longitude
-console.debug(latitude)
 </script>
