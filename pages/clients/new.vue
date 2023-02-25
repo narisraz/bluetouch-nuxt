@@ -120,7 +120,8 @@ const onSave = async () => {
     num_contrat: numContrat.value,
     prenom: prenom.value,
     tel: tel.value,
-    etat_branchement: Number(etatBranchement.value)
+    etat_branchement: Number(etatBranchement.value),
+    taille_menage: Number(tailleMenage)
   })
 
   await navigateTo('/clients')

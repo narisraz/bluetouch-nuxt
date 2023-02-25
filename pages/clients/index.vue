@@ -29,17 +29,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="border-b-2 border-background p-2">004</td>
-            <td class="border-b-2 border-background p-2">Eric Faneva</td>
-            <td class="border-b-2 border-background p-2">Branchement privée</td>
-            <td class="border-b-2 border-background p-2">111324</td>
-            <td class="border-b-2 border-background p-2">0341101223</td>
-            <td class="border-b-2 border-background p-2">Fokontany</td>
-            <td class="border-b-2 border-background p-2">Lot b 01 Idiambola</td>
-            <td class="border-b-2 border-background p-2">7</td>
-            <td class="border-b-2 border-background p-2">14</td>
+          <tr v-for="client in clients.data" :key="client.id">
+            <td class="border-b-2 border-background p-2">{{ client.attributes.num_contrat }}</td>
+            <td class="border-b-2 border-background p-2">{{ client.attributes.nom }} {{ client.attributes.prenom }}</td>
+            <td class="border-b-2 border-background p-2">{{ displayBranchement(client.attributes.branchement) }}</td>
+            <td class="border-b-2 border-background p-2">{{ displayCompteur(client.attributes.compteur) }}</td>
+            <td class="border-b-2 border-background p-2">{{ client.attributes.tel }}</td>
+            <td class="border-b-2 border-background p-2">{{ displayRue(client.attributes.adresse) }}</td>
+            <td class="border-b-2 border-background p-2">{{ displayAdresse(client.attributes.adresse) }}</td>
+            <td class="border-b-2 border-background p-2">{{ client.attributes.taille_menage }}</td>
             <td class="border-b-2 border-background p-2"></td>
+            <td class="border-b-2 border-background p-2">{{ displayEtatBranchement(client.attributes.etat_branchement) }}</td>
           </tr>
         </tbody>
       </table>
@@ -47,12 +47,51 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { Strapi4ResponseSingle } from '@nuxtjs/strapi/dist/runtime/types';
+import { useSaepStore } from '~~/store/saep';
+
 definePageMeta({
   layout: 'client',
+  middleware: 'auth'
 })
 
 useHead({
   title: "Clients"
 })
+
+const { find } = useStrapi()
+const saepStore = useSaepStore()
+
+const clients = await find<Client>('clients', {
+  filters: {
+    saep: saepStore.saep.id
+  },
+  populate: {
+    branchement: true,
+    compteur: true,
+    adresse: true,
+    etat_branchement: true
+  }
+})
+
+function displayBranchement(branchement: Strapi4ResponseSingle<Branchement> | number) {
+  return (branchement as Strapi4ResponseSingle<Branchement>).data.attributes.label
+}
+
+function displayCompteur(compteur: Strapi4ResponseSingle<Compteur> | number) {
+  return (compteur as Strapi4ResponseSingle<Compteur>).data.attributes.identifiant
+}
+
+function displayRue(adresse: Strapi4ResponseSingle<Adresse> | number) {
+  return (adresse as Strapi4ResponseSingle<Adresse>).data.attributes.rue
+}
+
+function displayAdresse(adresse: Strapi4ResponseSingle<Adresse> | number) {
+  return (adresse as Strapi4ResponseSingle<Adresse>).data.attributes.adresse
+}
+
+function displayEtatBranchement(etatBranchement: Strapi4ResponseSingle<EtatBranchement> | number) {
+  return (etatBranchement as Strapi4ResponseSingle<EtatBranchement>).data.attributes.label
+}
 </script>

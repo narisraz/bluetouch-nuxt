@@ -58,6 +58,7 @@ declare global {
     prenom: string
     tel: string
     email: string
+    taille_menage: number
     etat_branchement: Strapi4ResponseSingle<EtatBranchement> | number
     branchement: Strapi4ResponseSingle<Branchement> | number
     adresse: Strapi4ResponseSingle<Adresse> | number
