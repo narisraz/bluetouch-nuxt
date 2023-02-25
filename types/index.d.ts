@@ -42,6 +42,7 @@ declare global {
     prix_3: number
     volume_3: number
     branchement: Strapi4ResponseSingle<Branchement> | number
+    saep: Strapi4ResponseSingle<Saep> | number
   }
 
   interface Option {

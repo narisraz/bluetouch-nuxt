@@ -27,15 +27,15 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="border-b-2 border-background p-2">Branchement privé</td>
-            <td class="border-b-2 border-background p-2 text-center">1 000</td>
-            <td class="border-b-2 border-background p-2 text-center">2</td>
-            <td class="border-b-2 border-background p-2 text-center">1 500</td>
-            <td class="border-b-2 border-background p-2 text-center">3</td>
-            <td class="border-b-2 border-background p-2 text-center">2 000</td>
-            <td class="border-b-2 border-background p-2 text-center">4</td>
-            <td class="border-b-2 border-background p-2 text-center">2 500</td>
+          <tr v-for="tarif in tarifs.data" :key="tarif.id">
+            <td class="border-b-2 border-background p-2">{{ displayBranchement(tarif.attributes.branchement) }}</td>
+            <td class="border-b-2 border-background p-2 text-center">{{ tarif.attributes.prix_base }}</td>
+            <td class="border-b-2 border-background p-2 text-center">{{ tarif.attributes.prix_1 }}</td>
+            <td class="border-b-2 border-background p-2 text-center">{{ tarif.attributes.volume_1 }}</td>
+            <td class="border-b-2 border-background p-2 text-center">{{ tarif.attributes.prix_2 }}</td>
+            <td class="border-b-2 border-background p-2 text-center">{{ tarif.attributes.volume_2 }}</td>
+            <td class="border-b-2 border-background p-2 text-center">{{ tarif.attributes.prix_3 }}</td>
+            <td class="border-b-2 border-background p-2 text-center">{{ tarif.attributes.volume_3 }}</td>
           </tr>
         </tbody>
       </table>
@@ -43,12 +43,32 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { Strapi4ResponseSingle } from '@nuxtjs/strapi/dist/runtime/types';
+import { useSaepStore } from '~~/store/saep';
+
 definePageMeta({
   layout: 'client',
+  middleware: 'auth'
 })
 
 useHead({
   title: "Liste des tarifs"
 })
+
+const saepStore = useSaepStore()
+const { find } = useStrapi()
+
+const tarifs = await find<Tarif>('tarifs', {
+  filters: {
+    saep: saepStore.saep.id
+  },
+  populate: {
+    branchement: true
+  }
+})
+
+function displayBranchement(branchement: Strapi4ResponseSingle<Branchement> | number) {
+  return (branchement as Strapi4ResponseSingle<Branchement>).data.attributes.label
+}
 </script>

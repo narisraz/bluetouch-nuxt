@@ -29,6 +29,8 @@
 </template>
 
 <script setup lang="ts">
+import { useSaepStore } from '~~/store/saep';
+
 definePageMeta({
   layout: 'client',
   middleware: 'auth'
@@ -56,6 +58,7 @@ const price3 = ref()
 const volume3 = ref()
 
 const { create } = useStrapi()
+const saepStore = useSaepStore()
 
 const onSave = async () => {
   await create<Tarif>('tarifs', {
@@ -65,7 +68,8 @@ const onSave = async () => {
     prix_2: volume2.value,
     prix_3: price3.value,
     volume_3: volume3.value,
-    branchement: Number(branchement.value)
+    branchement: Number(branchement.value),
+    saep: saepStore.saep.id
   })
 
   await navigateTo('/tarifs')
