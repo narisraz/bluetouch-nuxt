@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-4">
     <div class="flex items-center justify-between">
-      <div class="text-on-background uppercase font-bold">Liste des compteurs (1)</div>
+      <div class="text-on-background uppercase font-bold">Liste des compteurs ({{ displayCount(compteurs.meta.pagination) }})</div>
       <NuxtLink to="/compteurs/new">
         <Button class="bg-secondary text-on-secondary flex space-x-2 hover:bg-secondary/75">
           <IconPlus />
@@ -62,5 +62,9 @@ function displayClient(client: Strapi4ResponseSingle<Client> | number) {
     return ''
   }
   return `${data.attributes.nom} ${data.attributes.prenom}`
+}
+
+function displayCount(pagination: any) {
+  return pagination.total
 }
 </script>

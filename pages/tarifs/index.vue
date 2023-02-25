@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-4">
     <div class="flex items-center justify-between">
-      <div class="text-on-background uppercase font-bold">Liste des tarifs (1)</div>
+      <div class="text-on-background uppercase font-bold">Liste des tarifs ({{ displayCount(tarifs.meta.pagination) }})</div>
       <NuxtLink to="/tarifs/new">
         <Button class="bg-secondary text-on-secondary flex space-x-2 hover:bg-secondary/75">
           <IconPlus />
@@ -70,5 +70,9 @@ const tarifs = await find<Tarif>('tarifs', {
 
 function displayBranchement(branchement: Strapi4ResponseSingle<Branchement> | number) {
   return (branchement as Strapi4ResponseSingle<Branchement>).data.attributes.label
+}
+
+function displayCount(pagination: any) {
+  return pagination.total
 }
 </script>

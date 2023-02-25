@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-4">
     <div class="flex items-center justify-between">
-      <div class="text-on-background uppercase font-bold">Liste des clients (1)</div>
+      <div class="text-on-background uppercase font-bold">Liste des clients ({{ displayCount(clients.meta.pagination) }})</div>
       <NuxtLink to="/clients/new">
         <Button class="bg-secondary text-on-secondary flex space-x-2 hover:bg-secondary/75">
           <IconPlus />
@@ -93,5 +93,9 @@ function displayAdresse(adresse: Strapi4ResponseSingle<Adresse> | number) {
 
 function displayEtatBranchement(etatBranchement: Strapi4ResponseSingle<EtatBranchement> | number) {
   return (etatBranchement as Strapi4ResponseSingle<EtatBranchement>).data.attributes.label
+}
+
+function displayCount(pagination: any) {
+  return pagination.total
 }
 </script>
