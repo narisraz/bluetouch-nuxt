@@ -21,9 +21,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="border-b-2 border-background p-2">004</td>
-            <td class="border-b-2 border-background p-2">Naris Razafimahatratra</td>
+          <tr v-for="compteur in compteurs.data" :key="compteur.id">
+            <td class="border-b-2 border-background p-2">{{ compteur.attributes.identifiant }}</td>
+            <td class="border-b-2 border-background p-2">{{ displayClient(compteur.attributes.client) }}</td>
           </tr>
         </tbody>
       </table>
@@ -31,12 +31,36 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { Strapi4ResponseSingle } from '@nuxtjs/strapi/dist/runtime/types';
+import { useSaepStore } from '~~/store/saep';
+
 definePageMeta({
   layout: 'client',
+  middleware: 'auth'
 })
 
 useHead({
   title: "Compteurs"
 })
+
+const { find } = useStrapi()
+const saepStore = useSaepStore()
+
+const compteurs = await find<Compteur>('compteurs', {
+  filters: {
+    saep: saepStore.saep.id
+  },
+  populate: {
+    client: true
+  }
+})
+
+function displayClient(client: Strapi4ResponseSingle<Client> | number) {
+  const data = (client as Strapi4ResponseSingle<Client>).data
+  if (!data) {
+    return ''
+  }
+  return `${data.attributes.nom} ${data.attributes.prenom}`
+}
 </script>

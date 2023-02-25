@@ -45,8 +45,21 @@ declare global {
     saep: Strapi4ResponseSingle<Saep> | number
   }
 
+  interface Client {
+    num_contrat: string
+    nom: string
+    prenom: string
+    tel: string
+    email: string
+    branchement: Strapi4ResponseSingle<Branchement>
+    adresse: Strapi4ResponseSingle<Adresse>
+    compteur: Strapi4ResponseSingle<Compteur>
+    tarif: Strapi4ResponseSingle<Tarif>
+  }
+
   interface Compteur {
     identifiant: string
+    client: Strapi4ResponseSingle<Client> | number
     saep: Strapi4ResponseSingle<Saep> | number
   }
 
