@@ -39,11 +39,14 @@
 </template>
 
 <script setup lang="ts">
+import { useSaepStore } from "~/store/saep"
+
 useHead({
   title: "Connexion"
 })
 
 const { login } = useStrapiAuth()
+
 const email = ref('')
 const password = ref('')
 const showAlert = ref(false)
@@ -54,6 +57,29 @@ const onSubmit = async () => {
       identifier: email.value,
       password: password.value
     })
+    const { find, findOne } = useStrapi()
+    const user = useStrapiUser()
+
+    const userDetailResponse = await find<UserDetail>('user-details', {
+      filters: {
+        user: user.value?.id
+      },
+      populate: {
+        saep: true,
+      }
+    })
+
+    const saepId = userDetailResponse.data.at(0)?.attributes.saep.data.id
+
+    const saep = await findOne<Saep>('saeps', saepId, {
+      populate: {
+        adresse: true,
+        ressources_en_eau: true
+      }
+    })
+
+    const saepStore = useSaepStore()
+    saepStore.setSaep({ ...saep.data.attributes, id: saep.data.id})
 
     return navigateTo('/home')
   } catch (e) {
