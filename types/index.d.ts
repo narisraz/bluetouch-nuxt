@@ -14,6 +14,7 @@ declare global {
   
   interface RessourceEnEau {
     label: string
+    code: CodeRessourceEnEau
   }
   
   interface Adresse {
@@ -33,6 +34,7 @@ declare global {
   interface Branchement {
     id: string
     label: string
+    code: CodeBranchement
   }
 
   interface Tarif {
@@ -74,5 +76,13 @@ declare global {
   interface Option {
     label: string,
     value: string
+  }
+
+  enum CodeBranchement {
+    PRIVE, SOCIAL
+  }
+
+  enum CodeRessourceEnEau {
+    RIVIERE, RESERVOIR, MONTAGNE
   }
 }
