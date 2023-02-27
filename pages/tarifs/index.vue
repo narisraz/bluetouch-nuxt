@@ -13,32 +13,31 @@
     </div>
 
     <div class="w-full">
-      <table class="table-auto w-full rounded-md bg-surface text-on-surface overflow-scroll">
-        <thead class="bg-surface-variant text-on-surface-variant rounded-md">
+      <Table>
+        <TableThead>
           <tr>
-            <th class="border-b-2 border-background text-left p-2">Groype tarifaire</th>
-            <th class="border-b-2 border-background text-left p-2">Prix de base</th>
-            <th class="border-b-2 border-background text-left p-2">Volume max 1er tranche</th>
-            <th class="border-b-2 border-background text-left p-2">Prix / tr.1</th>
-            <th class="border-b-2 border-background text-left p-2">Volume max 2e tranche</th>
-            <th class="border-b-2 border-background text-left p-2">Prix / tr.2</th>
-            <th class="border-b-2 border-background text-left p-2">Volume max 3e tranche</th>
-            <th class="border-b-2 border-background text-left p-2">Prix / tr.3</th>
+            <TableTh>Groype tarifaire</TableTh>
+            <TableTh>Prix de base</TableTh>
+            <TableTh>Volume max 1er tranche</TableTh>
+            <TableTh>Prix / tr.1</TableTh>
+            <TableTh>Volume max 2e tranche</TableTh>
+            <TableTh>Prix / tr.2</TableTh>
+            <TableTh>Volume max 3e tranche</TableTh>
+            <TableTh is-last>Prix / tr.3</TableTh>
           </tr>
-        </thead>
+        </TableThead>
         <tbody>
           <tr v-for="tarif in tarifs.data" :key="tarif.id">
-            <td class="border-b-2 border-background p-2">{{ displayBranchement(tarif.attributes.branchement) }}</td>
-            <td class="border-b-2 border-background p-2 text-center">{{ tarif.attributes.prix_base }}</td>
-            <td class="border-b-2 border-background p-2 text-center">{{ tarif.attributes.prix_1 }}</td>
-            <td class="border-b-2 border-background p-2 text-center">{{ tarif.attributes.volume_1 }}</td>
-            <td class="border-b-2 border-background p-2 text-center">{{ tarif.attributes.prix_2 }}</td>
-            <td class="border-b-2 border-background p-2 text-center">{{ tarif.attributes.volume_2 }}</td>
-            <td class="border-b-2 border-background p-2 text-center">{{ tarif.attributes.prix_3 }}</td>
-            <td class="border-b-2 border-background p-2 text-center">{{ tarif.attributes.volume_3 }}</td>
+            <TableTd>{{ tarif.attributes.prix_base }}</TableTd>
+            <TableTd>{{ tarif.attributes.prix_1 }}</TableTd>
+            <TableTd>{{ tarif.attributes.volume_1 }}</TableTd>
+            <TableTd>{{ tarif.attributes.prix_2 }}</TableTd>
+            <TableTd>{{ tarif.attributes.volume_2 }}</TableTd>
+            <TableTd>{{ tarif.attributes.prix_3 }}</TableTd>
+            <TableTd is-last>{{ tarif.attributes.volume_3 }}</TableTd>
           </tr>
         </tbody>
-      </table>
+      </Table>
     </div>
   </div>
 </template>

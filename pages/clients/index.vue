@@ -13,36 +13,36 @@
     </div>
 
     <div class="w-full">
-      <table class="table-auto w-full rounded-md bg-surface text-on-surface overflow-scroll">
-        <thead class="bg-surface-variant text-on-surface-variant rounded-md">
+      <Table>
+        <TableThead>
           <tr>
-            <th class="border-b-2 border-background text-left p-2">N° Contrat</th>
-            <th class="border-b-2 border-background text-left p-2">Abonné</th>
-            <th class="border-b-2 border-background text-left p-2">Groupe tarifaire</th>
-            <th class="border-b-2 border-background text-left p-2">Compteur</th>
-            <th class="border-b-2 border-background text-left p-2">Tél. mobile</th>
-            <th class="border-b-2 border-background text-left p-2">Rue</th>
-            <th class="border-b-2 border-background text-left p-2">Adresse</th>
-            <th class="border-b-2 border-background text-left p-2">Taille de ménage</th>
-            <th class="border-b-2 border-background text-left p-2">Rang dans la tournée</th>
-            <th class="border-b-2 border-background text-left p-2">Etat du branchement</th>
+            <TableTh>N° Contrat</TableTh>
+            <TableTh>Abonné</TableTh>
+            <TableTh>Groupe tarifaire</TableTh>
+            <TableTh>Compteur</TableTh>
+            <TableTh>Tél. mobile</TableTh>
+            <TableTh>Rue</TableTh>
+            <TableTh>Adresse</TableTh>
+            <TableTh>Taille de ménage</TableTh>
+            <TableTh>Rang dans la tournée</TableTh>
+            <TableTh is-last>Etat du branchement</TableTh>
           </tr>
-        </thead>
+        </TableThead>
         <tbody>
           <tr v-for="client in clients.data" :key="client.id">
-            <td class="border-b-2 border-background p-2">{{ client.attributes.num_contrat }}</td>
-            <td class="border-b-2 border-background p-2">{{ client.attributes.nom }} {{ client.attributes.prenom }}</td>
-            <td class="border-b-2 border-background p-2">{{ displayBranchement(client.attributes.branchement) }}</td>
-            <td class="border-b-2 border-background p-2">{{ displayCompteur(client.attributes.compteur) }}</td>
-            <td class="border-b-2 border-background p-2">{{ client.attributes.tel }}</td>
-            <td class="border-b-2 border-background p-2">{{ displayRue(client.attributes.adresse) }}</td>
-            <td class="border-b-2 border-background p-2">{{ displayAdresse(client.attributes.adresse) }}</td>
-            <td class="border-b-2 border-background p-2">{{ client.attributes.taille_menage }}</td>
-            <td class="border-b-2 border-background p-2"></td>
-            <td class="border-b-2 border-background p-2">{{ displayEtatBranchement(client.attributes.etat_branchement) }}</td>
+            <TableTd>{{ client.attributes.num_contrat }}</TableTd>
+            <TableTd>{{ client.attributes.nom }} {{ client.attributes.prenom }}</TableTd>
+            <TableTd>{{ displayBranchement(client.attributes.branchement) }}</TableTd>
+            <TableTd>{{ displayCompteur(client.attributes.compteur) }}</TableTd>
+            <TableTd>{{ client.attributes.tel }}</TableTd>
+            <TableTd>{{ displayRue(client.attributes.adresse) }}</TableTd>
+            <TableTd>{{ displayAdresse(client.attributes.adresse) }}</TableTd>
+            <TableTd>{{ client.attributes.taille_menage }}</TableTd>
+            <TableTd></TableTd>
+            <TableTd is-last>{{ displayEtatBranchement(client.attributes.etat_branchement) }}</TableTd>
           </tr>
         </tbody>
-      </table>
+      </Table>
     </div>
   </div>
 </template>

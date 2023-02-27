@@ -13,20 +13,20 @@
     </div>
 
     <div class="w-full">
-      <table class="table-auto w-full rounded-md bg-surface text-on-surface overflow-scroll">
-        <thead class="bg-surface-variant text-on-surface-variant rounded-md">
+      <Table>
+        <TableThead>
           <tr>
-            <th class="border-b-2 border-background text-left p-2">Identifiant</th>
-            <th class="border-b-2 border-background text-left p-2">Attribué à</th>
+            <TableTh>Identifiant</TableTh>
+            <TableTh is-last>Attribué à</TableTh>
           </tr>
-        </thead>
+        </TableThead>
         <tbody>
           <tr v-for="compteur in compteurs.data" :key="compteur.id">
-            <td class="border-b-2 border-background p-2">{{ compteur.attributes.identifiant }}</td>
-            <td class="border-b-2 border-background p-2">{{ displayClient(compteur.attributes.client) }}</td>
+            <TableTd>{{ compteur.attributes.identifiant }}</TableTd>
+            <TableTd is-last>{{ displayClient(compteur.attributes.client) }}</TableTd>
           </tr>
         </tbody>
-      </table>
+      </Table>
     </div>
   </div>
 </template>
