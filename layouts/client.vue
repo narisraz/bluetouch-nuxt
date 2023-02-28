@@ -28,6 +28,9 @@
               <DrawerMenuItem path="/clients/new" is-child>
                 Nouveau client
               </DrawerMenuItem>
+              <DrawerMenuItem path="/clients/generer-tournee" is-child>
+                Générer tournée
+              </DrawerMenuItem>
             </ul>
           </template>
         </DrawerMenuItem>
