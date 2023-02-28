@@ -28,6 +28,7 @@
           <FormTextfield v-model="email" type="text" name="email" label="Email" placeholder="Entrez l'adresse email" />
         </div>
         <div class="grid grid-cols-3 gap-4">
+          <FormSelect placeholder="Sélectionnez une tournée" :name="tournee" v-model="tournee" :options="tourneesOptions" label="Tournée" />
           <FormSelect :name="compteur" v-model="compteur" :options="compteursOptions" label="Compteur" />
           <FormSelect :name="branchement" v-model="branchement" :options="branchementsOptions" label="Branchement" />
         </div>
@@ -87,8 +88,19 @@ const etatBranchementOptions: Option[] = etatBranchements.data.map(e => ({
   value: '' + e.id
 }))
 
+const tournees = await find<Tournee>('tournees', {
+  filters: {
+    saep: saepStore.saep.id
+  }
+})
+const tourneesOptions: Option[] = tournees.data.map(t => ({
+  label: t.attributes.label,
+  value: '' + t.id
+})) 
+
 const compteur = ref(compteursOptions[0].value)
 const branchement = ref(branchementsOptions[0].value)
+const tournee = ref("")
 const etatBranchement = ref('1')
 const numContrat = ref()
 const nom = ref()

@@ -24,6 +24,7 @@
             <TableTh>Rue</TableTh>
             <TableTh>Adresse</TableTh>
             <TableTh>Taille de ménage</TableTh>
+            <TableTh>Tournée</TableTh>
             <TableTh is-last>Etat du branchement</TableTh>
           </tr>
         </TableThead>
@@ -37,6 +38,7 @@
             <TableTd>{{ displayRue(client.attributes.adresse) }}</TableTd>
             <TableTd>{{ displayAdresse(client.attributes.adresse) }}</TableTd>
             <TableTd>{{ client.attributes.taille_menage }}</TableTd>
+            <TableTd>{{ displayTournee(client.attributes.tournee) }}</TableTd>
             <TableTd is-last>{{ displayEtatBranchement(client.attributes.etat_branchement) }}</TableTd>
           </tr>
         </tbody>
@@ -69,7 +71,8 @@ const clients = await find<Client>('clients', {
     branchement: true,
     compteur: true,
     adresse: true,
-    etat_branchement: true
+    etat_branchement: true,
+    tournee: true
   }
 })
 
@@ -91,6 +94,10 @@ function displayAdresse(adresse: Strapi4ResponseSingle<Adresse> | number) {
 
 function displayEtatBranchement(etatBranchement: Strapi4ResponseSingle<EtatBranchement> | number) {
   return (etatBranchement as Strapi4ResponseSingle<EtatBranchement>).data.attributes.label
+}
+
+function displayTournee(tournee: Strapi4ResponseSingle<Tournee> | number) {
+  return (tournee as Strapi4ResponseSingle<Tournee>).data.attributes.label
 }
 
 function displayCount(pagination: any) {

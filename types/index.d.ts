@@ -70,6 +70,7 @@ declare global {
     branchement: Strapi4ResponseSingle<Branchement> | number
     adresse: Strapi4ResponseSingle<Adresse> | number
     compteur: Strapi4ResponseSingle<Compteur> | number
+    tournee: Strapi4ResponseSingle<Tournee> | number
   }
 
   interface Compteur {
