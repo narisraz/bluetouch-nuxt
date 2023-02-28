@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-4">
-    <ContainerCard title="Encaissement">
+    <ContainerCard title="Générer tournée">
       <form class="flex space-x-4 items-end">
         <FormSelect name="tournee" label="Tournée" :options="tournees" />
         <FormSelect name="responsable" label="Responsable" :options="responsables" />
@@ -51,7 +51,7 @@ definePageMeta({
 })
 
 useHead({
-  title: "Clients"
+  title: "Générer tournée"
 })
 
 const { find } = useStrapi()
