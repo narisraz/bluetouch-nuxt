@@ -23,12 +23,28 @@
           <template #child>
             <ul>
               <DrawerMenuItem path="/clients" is-child>
-              Liste des clients
+                Liste des clients
               </DrawerMenuItem>
               <DrawerMenuItem path="/clients/new" is-child>
                 Nouveau client
               </DrawerMenuItem>
-              <DrawerMenuItem path="/clients/generer-tournee" is-child>
+            </ul>
+          </template>
+        </DrawerMenuItem>
+        <DrawerMenuItem>
+          <template #icon>
+            <IconHome />
+          </template>
+          Tournées
+          <template #child>
+            <ul>
+              <DrawerMenuItem path="/tournees" is-child>
+                Liste des tournées
+              </DrawerMenuItem>
+              <DrawerMenuItem path="/tournees/new" is-child>
+                Nouvelle tournée
+              </DrawerMenuItem>
+              <DrawerMenuItem path="/tournees/generer-tournee" is-child>
                 Générer tournée
               </DrawerMenuItem>
             </ul>

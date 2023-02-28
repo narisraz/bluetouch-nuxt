@@ -4,9 +4,10 @@
     <select
       :value="modelValue"
       @change="change" 
-      :name="name" 
+      :name="name"
       class="bg-surface-variant px-2 py-2 mt-1 rounded-sm border-b-2 w-full focus:outline-0 focus:border-primary"
     >
+      <option v-if="placeholder" value="" disabled selected>{{ placeholder }}</option>
       <option v-for="option in options" :value="option.value" :key="option.value">
         {{ option.label }}
       </option>
@@ -30,7 +31,11 @@ defineProps({
   name: {
     required: true,
     type: String
-  }
+  },
+  placeholder: {
+    required: false,
+    type: String
+  },
 })
 
 function change($event: any) {

@@ -2,7 +2,7 @@
   <div class="space-y-4">
     <ContainerCard title="Générer tournée">
       <form class="flex space-x-4 items-end">
-        <FormSelect name="tournee" label="Tournée" :options="tournees" />
+        <FormSelect name="tournee" label="Tournée" :options="tourneesOptions" placeholder="Sélectionnez une tournée" />
         <FormSelect name="responsable" label="Responsable" :options="responsables" />
         <div>
           <Button class="bg-secondary text-on-secondary">Générer</Button>
@@ -10,7 +10,7 @@
       </form>
     </ContainerCard>
 
-    <div class="w-full">
+    <div class="w-full space-y-4">
       <Table>
         <TableThead>
           <tr>
@@ -37,6 +37,8 @@
           </tr>
         </tbody>
       </Table>
+
+      <Button class="bg-secondary text-on-secondary">Valider</Button>
     </div>
   </div>
 </template>
@@ -57,7 +59,16 @@ useHead({
 const { find } = useStrapi()
 const saepStore = useSaepStore()
 
-const tournees: Option[] = []
+const tournees = find<Tournee>('tournees', {
+  filters: {
+    saep: saepStore.saep.id
+  }
+})
+const tourneesOptions: Option[] = (await tournees).data.map(t => ({
+  label: t.attributes.label,
+  value: '' + t.id
+}))
+
 const responsables: Option[] = []
 
 const clients = await find<Client>('clients', {

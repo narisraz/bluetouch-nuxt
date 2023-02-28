@@ -49,6 +49,11 @@ declare global {
     saep: Strapi4ResponseSingle<Saep> | number
   }
 
+  interface Tournee {
+    label: string
+    saep: Strapi4ResponseSingle<Saep> | number
+  }
+
   interface EtatBranchement {
     label: string
     code: string
