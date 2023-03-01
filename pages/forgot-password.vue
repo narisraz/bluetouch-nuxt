@@ -30,6 +30,10 @@ const { forgotPassword } = useStrapiAuth()
 const showAlert = ref(false)
 const email = ref('')
 
+useHead({
+  title: "Mot de passe oublié"
+})
+
 const onSubmit = async () => {
   try {
     await forgotPassword({ email: email })
