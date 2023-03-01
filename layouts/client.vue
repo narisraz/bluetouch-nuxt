@@ -19,6 +19,22 @@
           <template #icon>
             <IconHome />
           </template>
+          Collaborateurs
+          <template #child>
+            <ul>
+              <DrawerMenuItem path="/collaborateurs" is-child>
+                Liste des collaborateurs
+              </DrawerMenuItem>
+              <DrawerMenuItem path="/collaborateurs/new" is-child>
+                Nouveau collaborateur
+              </DrawerMenuItem>
+            </ul>
+          </template>
+        </DrawerMenuItem>
+        <DrawerMenuItem>
+          <template #icon>
+            <IconHome />
+          </template>
           Clients
           <template #child>
             <ul>

@@ -1,4 +1,4 @@
-import { Strapi4ResponseMany, Strapi4ResponseSingle } from "@nuxtjs/strapi/dist/runtime/types"
+import { Strapi4ResponseMany, Strapi4ResponseSingle, StrapiUser } from "@nuxtjs/strapi/dist/runtime/types"
 
 export { }
 
@@ -28,7 +28,13 @@ declare global {
   }
 
   interface UserDetail {
-    saep: Strapi4ResponseSingle<Saep>
+    nom: string
+    prenom: string
+    tel: string
+    email: string
+    saep: Strapi4ResponseSingle<Saep> | number
+    user_role: Strapi4ResponseSingle<Role> | number
+    user: Strapi4ResponseSingle<StrapiUser> | number
   }
 
   interface Branchement {
@@ -71,6 +77,11 @@ declare global {
     adresse: Strapi4ResponseSingle<Adresse> | number
     compteur: Strapi4ResponseSingle<Compteur> | number
     tournee: Strapi4ResponseSingle<Tournee> | number
+  }
+
+  interface Role {
+    label: string,
+    code: string
   }
 
   interface Compteur {
