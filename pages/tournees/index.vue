@@ -16,12 +16,23 @@
       <Table>
         <TableThead>
           <tr>
-            <TableTh is-last>Libellé</TableTh>
+            <TableTh>Libellé</TableTh>
+            <TableTh>Cloturé</TableTh>
+            <TableTh is-last>Actions</TableTh>
           </tr>
         </TableThead>
         <tbody>
           <tr v-for="tournee in tournees.data" :key="tournee.id">
-            <TableTd is-last>{{ tournee.attributes.label }}</TableTd>
+            <TableTd>{{ tournee.attributes.label }}</TableTd>
+            <TableTd>{{ tournee.attributes.cloturee ? "Oui" : "Non" }}</TableTd>
+            <TableTd is-last>
+              <Action v-if="tournee.attributes.cloturee" @click="() => cloturerTournee(tournee.id, false)">
+                <IconPlay />
+              </Action>
+              <Action v-else @click="() => cloturerTournee(tournee.id, true)">
+                <IconStop />
+              </Action>
+            </TableTd>
           </tr>
         </tbody>
       </Table>
@@ -38,19 +49,31 @@ definePageMeta({
 })
 
 useHead({
-  title: "Compteurs"
+  title: "Tournées"
 })
 
-const { find } = useStrapi()
+const { find, update } = useStrapi()
 const saepStore = useSaepStore()
 
-const tournees = await find<Tournee>('tournees', {
-  filters: {
-    saep: saepStore.saep.id
-  }
-})
+const tournees = ref(await findTournees())
+
+async function findTournees() {
+  return await find<Tournee>('tournees', {
+    filters: {
+      saep: saepStore.saep.id
+    }
+  })
+}
 
 function displayCount(pagination: any) {
   return pagination.total
+}
+
+async function cloturerTournee(id: number, value: boolean) {
+  await update<Tournee>('tournees', id, {
+    cloturee: value
+  })
+
+  tournees.value = await findTournees()
 }
 </script>
