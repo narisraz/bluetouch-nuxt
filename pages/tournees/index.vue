@@ -17,13 +17,15 @@
         <TableThead>
           <tr>
             <TableTh>Libellé</TableTh>
-            <TableTh>Cloturé</TableTh>
+            <TableTh>Terminée</TableTh>
+            <TableTh>Cloturée</TableTh>
             <TableTh is-last>Actions</TableTh>
           </tr>
         </TableThead>
         <tbody>
           <tr v-for="tournee in tournees.data" :key="tournee.id">
             <TableTd>{{ tournee.attributes.label }}</TableTd>
+            <TableTd>{{ tournee.attributes.terminee }}</TableTd>
             <TableTd>{{ tournee.attributes.cloturee ? "Oui" : "Non" }}</TableTd>
             <TableTd is-last>
               <Action v-if="tournee.attributes.cloturee" @click="() => cloturerTournee(tournee.id, false)">

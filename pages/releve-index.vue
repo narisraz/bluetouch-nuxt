@@ -41,7 +41,7 @@
         </tbody>
       </Table>
   
-      <Button class="bg-secondary text-on-secondary" @click="cloturerTournee">Cloturer</Button>
+      <Button class="bg-secondary text-on-secondary" @click="terminerTournee">Terminer</Button>
     </div>
 
     <ContainerModal :is-open="openDialog" :close="closeModal">
@@ -168,9 +168,9 @@ async function startTournee() {
   clients.value = await findClient()
 }
 
-async function cloturerTournee() {
+async function terminerTournee() {
   await update<Tournee>('tournees', tournee.value, {
-    cloturee: true
+    terminee: true
   })
 
   tournees.value = await findTournee()

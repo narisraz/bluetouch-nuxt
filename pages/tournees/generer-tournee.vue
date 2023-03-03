@@ -125,6 +125,7 @@ async function validate() {
 
   await update<Tournee>('tournees', tournee.value, {
     cloturee: false,
+    terminee: false,
     user_detail: responsable.value
   })
 

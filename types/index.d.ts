@@ -58,6 +58,7 @@ declare global {
   interface Tournee {
     label: string
     cloturee: boolean
+    terminee: boolean
     saep: Strapi4ResponseSingle<Saep> | number
     user_detail: Strapi4ResponseSingle<UserDetail> | number
   }
