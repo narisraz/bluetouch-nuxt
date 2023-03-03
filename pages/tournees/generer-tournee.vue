@@ -1,50 +1,42 @@
 <template>
   <div class="space-y-4">
     <ContainerCard title="Générer tournée">
-      <form class="flex space-x-4 items-end">
-        <FormSelect name="tournee" label="Tournée" :options="tourneesOptions" placeholder="Sélectionnez une tournée" />
-        <FormSelect name="responsable" label="Responsable" :options="responsables" />
+      <form class="flex space-x-4 items-end" @submit.prevent="generate">
+        <FormSelect v-model="tournee" name="tournee" label="Tournée" :options="tourneesOptions" placeholder="Sélectionnez une tournée" />
+        <FormSelect v-model="responsable" placeholder="Choisissez le responsable" name="responsable" label="Responsable" :options="responsablesOptions" />
         <div>
-          <Button class="bg-secondary text-on-secondary">Générer</Button>
+          <Button type="submit" class="bg-secondary text-on-secondary">Générer</Button>
         </div>
       </form>
     </ContainerCard>
 
-    <div class="w-full space-y-4">
+    <div class="w-full space-y-4" v-if="tourneesToDisplay?.length">
       <Table>
         <TableThead>
           <tr>
-            <TableTh>N° Contrat</TableTh>
-            <TableTh>Abonné</TableTh>
-            <TableTh>Compteur</TableTh>
-            <TableTh>Tél. mobile</TableTh>
-            <TableTh>Rue</TableTh>
+            <TableTh>Nom</TableTh>
             <TableTh>Adresse</TableTh>
-            <TableTh>Rang dans la tournée</TableTh>
-            <TableTh is-last>Etat du branchement</TableTh>
+            <TableTh>Date tournée</TableTh>
+            <TableTh is-last>Dernière index</TableTh>
           </tr>
         </TableThead>
         <tbody>
-          <tr v-for="client in clients.data" :key="client.id">
-            <TableTd>{{ client.attributes.num_contrat }}</TableTd>
-            <TableTd>{{ client.attributes.nom }} {{ client.attributes.prenom }}</TableTd>
-            <TableTd>{{ displayCompteur(client.attributes.compteur) }}</TableTd>
-            <TableTd>{{ client.attributes.tel }}</TableTd>
-            <TableTd>{{ displayRue(client.attributes.adresse) }}</TableTd>
-            <TableTd>{{ displayAdresse(client.attributes.adresse) }}</TableTd>
-            <TableTd></TableTd>
-            <TableTd is-last>{{ displayEtatBranchement(client.attributes.etat_branchement) }}</TableTd>
+          <tr v-for="tournee in tourneesToDisplay" :key="tournee.clientId">
+            <TableTd>{{ tournee.nom }}</TableTd>
+            <TableTd>{{ tournee.adresse }}</TableTd>
+            <TableTd>{{ Intl.DateTimeFormat('fr-FR').format(tournee.dateTournee) }}</TableTd>
+            <TableTd is-last>{{ tournee.ancienneIndex }}</TableTd>
           </tr>
         </tbody>
       </Table>
 
-      <Button class="bg-secondary text-on-secondary">Valider</Button>
+      <Button class="bg-secondary text-on-secondary" @click="validate">Valider</Button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Strapi4ResponseSingle } from '@nuxtjs/strapi/dist/runtime/types';
+import { Strapi4ResponseMany, Strapi4ResponseSingle } from '@nuxtjs/strapi/dist/runtime/types';
 import { useSaepStore } from '~~/store/saep';
 
 definePageMeta({
@@ -56,46 +48,85 @@ useHead({
   title: "Générer tournée"
 })
 
-const { find } = useStrapi()
+const { find, create } = useStrapi()
 const saepStore = useSaepStore()
 
-const tournees = find<Tournee>('tournees', {
+const tournees = await find<Tournee>('tournees', {
   filters: {
     saep: saepStore.saep.id
   }
 })
-const tourneesOptions: Option[] = (await tournees).data.map(t => ({
+const tourneesOptions: Option[] = tournees.data.map(t => ({
   label: t.attributes.label,
   value: '' + t.id
 }))
 
-const responsables: Option[] = []
-
-const clients = await find<Client>('clients', {
+const responsables = await find<UserDetail>('user-details', {
   filters: {
-    saep: saepStore.saep.id
+    saep: saepStore.saep.id,
   },
   populate: {
-    branchement: true,
-    compteur: true,
-    adresse: true,
-    etat_branchement: true
+    user_role: true
   }
 })
+const responsablesOptions: Option[] = responsables.data.map(r => ({
+  label: `${r.attributes.nom} ${r.attributes.prenom} (${(r.attributes.user_role as Strapi4ResponseSingle<Role>).data.attributes.label})`,
+  value: '' + r.id
+}))
 
-function displayCompteur(compteur: Strapi4ResponseSingle<Compteur> | number) {
-  return (compteur as Strapi4ResponseSingle<Compteur>).data.attributes.identifiant
+const tournee = ref()
+const responsable = ref()
+
+interface TourneeToDisplay {
+  clientId: number
+  nom: string
+  adresse: string
+  dateTournee: number
+  ancienneIndex: number | undefined
+}
+const tourneesToDisplay = ref<TourneeToDisplay[]>()
+
+async function generate() {
+  if (!tournee.value || !responsable.value) {
+    return;
+  }
+
+  const clients = await find<Client>('clients', {
+    filters: {
+      tournee: tournee.value,
+    },
+    pagination: {
+      start: 0,
+      limit: Number.MAX_SAFE_INTEGER
+    },
+    populate: {
+      historique_indices: true,
+      adresse: true
+    }
+  })
+
+  alert(JSON.stringify(clients))
+
+  const date = Date.now()
+
+  tourneesToDisplay.value = clients.data.map(c => ({
+    clientId: c.id,
+    nom: `${c.attributes.nom} ${c.attributes.prenom}`,
+    adresse: (c.attributes.adresse as Strapi4ResponseSingle<Adresse>).data.attributes.adresse,
+    dateTournee: date,
+    ancienneIndex: (c.attributes.historique_indices as Strapi4ResponseMany<HistoriqueIndex>).data.at(-1)?.attributes.value
+  }))
 }
 
-function displayRue(adresse: Strapi4ResponseSingle<Adresse> | number) {
-  return (adresse as Strapi4ResponseSingle<Adresse>).data.attributes.rue
-}
+async function validate() {
+  tourneesToDisplay.value?.map(async t => await create<HistoriqueIndex>('historique-indices', ({
+    client: t.clientId,
+    date_tournee: t.dateTournee,
+    value: 0
+  })))
 
-function displayAdresse(adresse: Strapi4ResponseSingle<Adresse> | number) {
-  return (adresse as Strapi4ResponseSingle<Adresse>).data.attributes.adresse
-}
-
-function displayEtatBranchement(etatBranchement: Strapi4ResponseSingle<EtatBranchement> | number) {
-  return (etatBranchement as Strapi4ResponseSingle<EtatBranchement>).data.attributes.label
+  tournee.value = undefined
+  responsable.value = undefined
+  tourneesToDisplay.value = []
 }
 </script>

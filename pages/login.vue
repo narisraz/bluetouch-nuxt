@@ -39,6 +39,7 @@
 </template>
 
 <script setup lang="ts">
+import { Strapi4ResponseSingle } from "@nuxtjs/strapi/dist/runtime/types";
 import { useSaepStore } from "~/store/saep"
 
 useHead({
@@ -69,7 +70,7 @@ const onSubmit = async () => {
       }
     })
 
-    const saepId = userDetailResponse.data.at(0)?.attributes.saep.data.id
+    const saepId = (userDetailResponse.data.at(0)?.attributes.saep as Strapi4ResponseSingle<Saep>).data.id
 
     const saep = await findOne<Saep>('saeps', saepId, {
       populate: {

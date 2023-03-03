@@ -77,6 +77,13 @@ declare global {
     adresse: Strapi4ResponseSingle<Adresse> | number
     compteur: Strapi4ResponseSingle<Compteur> | number
     tournee: Strapi4ResponseSingle<Tournee> | number
+    historique_indices: Strapi4ResponseMany<HistoriqueIndex> | number
+  }
+
+  interface HistoriqueIndex {
+    value: number,
+    date_tournee: number,
+    client: Strapi4ResponseSingle<Client> | number
   }
 
   interface Role {
