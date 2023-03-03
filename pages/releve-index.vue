@@ -173,8 +173,8 @@ async function cloturerTournee() {
     cloturee: true
   })
 
-  tournee.value = undefined
   tournees.value = await findTournee()
+  tournee.value = undefined
   clients.value = undefined
 }
 </script>

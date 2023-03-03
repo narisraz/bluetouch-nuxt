@@ -59,6 +59,7 @@ declare global {
     label: string
     cloturee: boolean
     saep: Strapi4ResponseSingle<Saep> | number
+    user_detail: Strapi4ResponseSingle<UserDetail> | number
   }
 
   interface EtatBranchement {
