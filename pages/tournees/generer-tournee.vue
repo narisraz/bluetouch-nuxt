@@ -17,7 +17,7 @@
             <TableTh>Nom</TableTh>
             <TableTh>Adresse</TableTh>
             <TableTh>Date tournée</TableTh>
-            <TableTh is-last>Dernière index</TableTh>
+            <TableTh is-last>Dernier index</TableTh>
           </tr>
         </TableThead>
         <tbody>
@@ -25,7 +25,7 @@
             <TableTd>{{ tournee.nom }}</TableTd>
             <TableTd>{{ tournee.adresse }}</TableTd>
             <TableTd>{{ Intl.DateTimeFormat('fr-FR').format(tournee.dateTournee) }}</TableTd>
-            <TableTd is-last>{{ tournee.ancienneIndex }}</TableTd>
+            <TableTd is-last>{{ tournee.ancienIndex }}</TableTd>
           </tr>
         </tbody>
       </Table>
@@ -48,7 +48,7 @@ useHead({
   title: "Générer tournée"
 })
 
-const { find, create } = useStrapi()
+const { find, create, update } = useStrapi()
 const saepStore = useSaepStore()
 
 const tournees = await find<Tournee>('tournees', {
@@ -82,7 +82,7 @@ interface TourneeToDisplay {
   nom: string
   adresse: string
   dateTournee: number
-  ancienneIndex: number | undefined
+  ancienIndex: number | undefined
 }
 const tourneesToDisplay = ref<TourneeToDisplay[]>()
 
@@ -105,8 +105,6 @@ async function generate() {
     }
   })
 
-  alert(JSON.stringify(clients))
-
   const date = Date.now()
 
   tourneesToDisplay.value = clients.data.map(c => ({
@@ -114,7 +112,7 @@ async function generate() {
     nom: `${c.attributes.nom} ${c.attributes.prenom}`,
     adresse: (c.attributes.adresse as Strapi4ResponseSingle<Adresse>).data.attributes.adresse,
     dateTournee: date,
-    ancienneIndex: (c.attributes.historique_indices as Strapi4ResponseMany<HistoriqueIndex>).data.at(-1)?.attributes.value
+    ancienIndex: (c.attributes.historique_indices as Strapi4ResponseMany<HistoriqueIndex>).data.at(-1)?.attributes.value
   }))
 }
 
@@ -124,6 +122,10 @@ async function validate() {
     date_tournee: t.dateTournee,
     value: 0
   })))
+
+  await update<Tournee>('tournees', tournee.value, {
+    cloturee: false
+  })
 
   tournee.value = undefined
   responsable.value = undefined

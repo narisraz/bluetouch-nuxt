@@ -57,6 +57,7 @@ declare global {
 
   interface Tournee {
     label: string
+    cloturee: boolean
     saep: Strapi4ResponseSingle<Saep> | number
   }
 
@@ -77,7 +78,7 @@ declare global {
     adresse: Strapi4ResponseSingle<Adresse> | number
     compteur: Strapi4ResponseSingle<Compteur> | number
     tournee: Strapi4ResponseSingle<Tournee> | number
-    historique_indices: Strapi4ResponseMany<HistoriqueIndex> | number
+    historique_indices: Strapi4ResponseMany<HistoriqueIndex> | number[]
   }
 
   interface HistoriqueIndex {
