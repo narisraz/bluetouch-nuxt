@@ -1,6 +1,6 @@
 <template>
   <div class="w-full space-y-4">
-    <ContainerCard :title="`Facture mois de `">
+    <ContainerCard :title="`Facture du ${Intl.DateTimeFormat('fr-FR').format(Date.now())}`">
       <form class="flex space-x-4 items-end" @submit.prevent="genererFactures">
         <FormSelect v-model="tournee" placeholder="Sélectionnez la tournée" name="tournee" :options="tourneesOptions" label="Tournée" />
         <Button class="bg-secondary text-on-secondary">Générer</Button>
