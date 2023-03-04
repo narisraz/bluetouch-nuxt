@@ -70,6 +70,7 @@ import { useSaepStore } from "~~/store/saep"
 
 definePageMeta({
   layout: 'client',
+  middleware: 'auth'
 })
 
 useHead({

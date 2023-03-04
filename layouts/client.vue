@@ -94,7 +94,7 @@
           </template>
           Encaissement
         </DrawerMenuItem>
-        <DrawerMenuItem>
+        <DrawerMenuItem path="/facturation">
           <template #icon>
             <IconHome />
           </template>
@@ -143,6 +143,8 @@
 </template>
 
 <script setup lang="ts">
+import { Strapi4ResponseSingle } from '@nuxtjs/strapi/dist/runtime/types';
+
 const { find, findOne } = useStrapi()
 const user = useStrapiUser()
 
@@ -155,7 +157,7 @@ const userDetailResponse = await find<UserDetail>('user-details', {
   }
 })
 
-const saepId = userDetailResponse.data.at(0)?.attributes.saep.data.id
+const saepId = (userDetailResponse.data.at(0)?.attributes.saep as Strapi4ResponseSingle<Saep>).data.id
 
 const saep = await findOne<Saep>('saeps', saepId, {
   populate: {

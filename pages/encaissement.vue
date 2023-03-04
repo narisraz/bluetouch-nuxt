@@ -66,6 +66,7 @@
 <script setup>
 definePageMeta({
   layout: 'client',
+  middleware: 'auth'
 })
 
 useHead({
