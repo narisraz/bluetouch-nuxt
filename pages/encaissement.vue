@@ -1,46 +1,43 @@
 <template>
   <div class="space-y-4">
     <ContainerCard title="Encaissement">
-      <form class="flex space-x-4 items-end">
-        <FormTextfield type="text" name="contract" label="N° contrat" placeholder="Entrez un numéro de contrat" />
-        <FormTextfield type="text" name="name" label="Nom" placeholder="Entrez un nom" />
-        <FormTextfield type="text" name="firstName" label="Prénom" placeholder="Entrez un prénom" />
-        <FormTextfield type="text" name="tel" label="Téléphone" placeholder="Entrez un numéro" />
-        <div>
-          <Button class="bg-secondary text-on-secondary">Rechercher</Button>
-        </div>
+      <form class="flex space-x-4 items-end" @submit.prevent="rechercherClient">
+        <FormTextfield v-model="contrat" type="text" name="contract" label="N° contrat" placeholder="Entrez un numéro de contrat" />
+        <FormTextfield v-model="nom" type="text" name="name" label="Nom" placeholder="Entrez un nom" />
+        <FormTextfield v-model="prenom" type="text" name="firstName" label="Prénom" placeholder="Entrez un prénom" />
+        <FormTextfield v-model="tel" type="text" name="tel" label="Téléphone" placeholder="Entrez un numéro" />
+        <Button class="bg-secondary text-on-secondary" type="submit">Rechercher</Button>
       </form>
     </ContainerCard>
-    <div class="w-full">
-      <table class="table-auto w-full rounded-md bg-surface text-on-surface overflow-scroll">
-        <thead class="bg-surface-variant text-on-surface-variant rounded-md">
-          <tr>
-            <th class="border-b-2 border-background text-left p-2">N° Contrat</th>
-            <th class="border-b-2 border-background text-left p-2">Abonné</th>
-            <th class="border-b-2 border-background text-left p-2">Tél. mobile</th>
-            <th class="border-b-2 border-background text-left p-2">Rue</th>
-            <th class="border-b-2 border-background text-left p-2">Adresse</th>
-            <th class="border-b-2 border-background text-left p-2">Reste à payer</th>
-            <th class="border-b-2 border-background text-left p-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="border-b-2 border-background p-2">004</td>
-            <td class="border-b-2 border-background p-2">Eric Faneva</td>
-            <td class="border-b-2 border-background p-2">0341101223</td>
-            <td class="border-b-2 border-background p-2">Fokontany</td>
-            <td class="border-b-2 border-background p-2">Lot b 01 Idiambola</td>
-            <td class="border-b-2 border-background p-2">1 000 Ar</td>
-            <td class="border-b-2 border-background p-2 flex space-x-2">
-              <div class="hover:cursor-pointer hover:text-primary" @click="pay">
-                <IconCreditCard />
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <Table v-if="clients?.data">
+      <TableThead>
+        <tr>
+          <TableTh>N° Contrat</TableTh>
+          <TableTh>Abonné</TableTh>
+          <TableTh>Tél. mobile</TableTh>
+          <TableTh>Rue</TableTh>
+          <TableTh>Adresse</TableTh>
+          <TableTh>Reste à payer</TableTh>
+          <TableTh is-last>Actions</TableTh>
+        </tr>
+      </TableThead>
+      <tbody>
+        <tr v-for="client in clients.data" :key="client.id">
+          <TableTd>{{ client.attributes.num_contrat }}</TableTd>
+          <TableTd>{{ client.attributes.nom }} {{ client.attributes.prenom }}</TableTd>
+          <TableTd>{{ client.attributes.tel }}</TableTd>
+          <TableTd>{{ displayRue(client.attributes.adresse) }}</TableTd>
+          <TableTd>{{ displayAdresse(client.attributes.adresse) }}</TableTd>
+          <TableTd>{{ calculerTotalAPayer(client.attributes.factures) }}</TableTd>
+          <TableTd is-last>
+            <Action @click="() => openDialog = true">
+              <IconCreditCard />
+            </Action>
+          </TableTd>
+        </tr>
+      </tbody>
+    </Table>
+    
     <ContainerModal :is-open="openDialog" :close="closeModal">
       <ContainerCard>
         <form class="space-y-4" method="post">
@@ -63,7 +60,10 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { Strapi4ResponseMany, Strapi4ResponseSingle } from '@nuxtjs/strapi/dist/runtime/types';
+import { useSaepStore } from '~~/store/saep';
+
 definePageMeta({
   layout: 'client',
   middleware: 'auth'
@@ -73,13 +73,64 @@ useHead({
   title: "Encaissement"
 })
 
-const openDialog = ref(false)
+const saepStore = useSaepStore()
+
+const { find } = useStrapi()
+
+const contrat = ref()
+const nom = ref()
+const prenom = ref()
+const tel = ref()
+const clients = ref<Strapi4ResponseMany<Client>>()
+
+async function rechercherClient() {
+  clients.value = await find<Client>('clients', {
+    filters: {
+      saep: saepStore.saep.id,
+      $or: [
+        {num_contrat: {
+          $contains: contrat.value
+        }},
+        {nom: {
+          $contains: nom.value
+        }},
+        {prenom: {
+          $contains: prenom.value
+        }},
+        {tel: {
+          $contains: tel.value
+        }}
+      ]
+    },
+    populate: {
+      adresse: true,
+      factures: true
+    }
+  })
+}
 
 function pay() {
   openDialog.value = true
 }
 
+function calculerTotalAPayer(factures: Strapi4ResponseMany<Facture> | number[]) {
+  return (factures as Strapi4ResponseMany<Facture>).data
+    .filter(facture => !facture.attributes.regle)
+    .map(facture => facture.attributes.montant)
+    .reduce((f1, f2) => f1 + f2, 0)
+}
+
+const openDialog = ref(false)
+
 function closeModal() {
   openDialog.value = false
+}
+
+function displayRue(adresse: Strapi4ResponseSingle<Adresse> | number) {
+  return (adresse as Strapi4ResponseSingle<Adresse>).data.attributes.rue
+}
+
+function displayAdresse(adresse: Strapi4ResponseSingle<Adresse> | number) {
+  return (adresse as Strapi4ResponseSingle<Adresse>).data.attributes.adresse
 }
 </script>
