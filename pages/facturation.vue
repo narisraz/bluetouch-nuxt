@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 import { Strapi4ResponseData, Strapi4ResponseMany, Strapi4ResponseSingle } from "@nuxtjs/strapi/dist/runtime/types"
-import { useSaepStore } from "~~/store/saep"
+import { useSaepStore } from "~~/store/saep";
 
 definePageMeta({
   layout: 'client',
@@ -57,11 +57,9 @@ useHead({
   title: "Facturation"
 })
 
-const { find, update, delete: _delete, create, findOne } = useStrapi()
 const saepStore = useSaepStore()
-const selectedClientId = ref()
-const selectedDernierIndexId = ref()
-const newIndex = ref()
+
+const { find, delete: _delete, create } = useStrapi()
 const tournee = ref()
 
 const tournees = ref(await findTournee())
@@ -97,10 +95,6 @@ function displayTotal(factures: Strapi4ResponseMany<Facture> | number[]) {
     .filter(facture => !facture.attributes.regle)
     .map(facture => facture.attributes.montant)
     .reduce((f1, f2) => f1 + f2, 0)
-}
-
-function getIdDerniereIndex(historiqueIndices: Strapi4ResponseMany<HistoriqueIndex> | number[]) {
-  return (historiqueIndices as Strapi4ResponseMany<HistoriqueIndex>).data.at(-1)?.id
 }
 
 async function findTournee() {
@@ -140,28 +134,6 @@ async function findTarifs() {
       branchement: true
     }
   })
-}
-
-const openDialog = ref(false)
-
-function addNewIndex(clientId: number, indexId: number | undefined) {
-  selectedClientId.value = clientId
-  selectedDernierIndexId.value = indexId
-  openDialog.value = true
-}
-
-function closeModal() {
-  openDialog.value = false
-  newIndex.value = undefined
-}
-
-async function saveNewIndex() {
-  await update<HistoriqueIndex>('historique-indices', selectedDernierIndexId.value, {
-    value: newIndex.value
-  })
-
-  clients.value = await findClient()
-  closeModal()
 }
 
 async function genererFactures() {
