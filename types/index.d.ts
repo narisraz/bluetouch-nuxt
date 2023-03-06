@@ -106,6 +106,9 @@ declare global {
     montant: number
     date: number
     client: Strapi4ResponseSingle<Client> | number
+    saep: Strapi4ResponseSingle<Saep> | number
+    tournee: Strapi4ResponseSingle<Tournee> | number
+    user_detail: Strapi4ResponseSingle<UserDetail> | number
   }
 
   interface Role {

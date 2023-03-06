@@ -35,6 +35,38 @@
           <template #icon>
             <IconHome />
           </template>
+          Compteurs
+          <template #child>
+            <ul>
+              <DrawerMenuItem path="/compteurs" is-child>
+                Liste des compteurs
+              </DrawerMenuItem>
+              <DrawerMenuItem path="/compteurs/new" is-child>
+                Nouveau compteur
+              </DrawerMenuItem>
+            </ul>
+          </template>
+        </DrawerMenuItem>
+        <DrawerMenuItem>
+          <template #icon>
+            <IconHome />
+          </template>
+          Tarifs
+          <template #child>
+            <ul>
+              <DrawerMenuItem path="/tarifs" is-child>
+                Liste des tarifs
+              </DrawerMenuItem>
+              <DrawerMenuItem path="/tarifs/new" is-child>
+                Nouveau tarif
+              </DrawerMenuItem>
+            </ul>
+          </template>
+        </DrawerMenuItem>
+        <DrawerMenuItem>
+          <template #icon>
+            <IconHome />
+          </template>
           Clients
           <template #child>
             <ul>
@@ -66,33 +98,11 @@
             </ul>
           </template>
         </DrawerMenuItem>
-        <DrawerMenuItem>
-          <template #icon>
-            <IconHome />
-          </template>
-          Compteurs
-          <template #child>
-            <ul>
-              <DrawerMenuItem path="/compteurs" is-child>
-                Liste des compteurs
-              </DrawerMenuItem>
-              <DrawerMenuItem path="/compteurs/new" is-child>
-                Nouveau compteur
-              </DrawerMenuItem>
-            </ul>
-          </template>
-        </DrawerMenuItem>
         <DrawerMenuItem path="/releve-index">
           <template #icon>
             <IconHome />
           </template>
           Relevé indexe
-        </DrawerMenuItem>
-        <DrawerMenuItem path="/encaissement">
-          <template #icon>
-            <IconHome />
-          </template>
-          Encaissement
         </DrawerMenuItem>
         <DrawerMenuItem path="/facturation">
           <template #icon>
@@ -104,20 +114,14 @@
           <template #icon>
             <IconHome />
           </template>
-          Suivi envaissement
-        </DrawerMenuItem>
-        <DrawerMenuItem>
-          <template #icon>
-            <IconHome />
-          </template>
-          Tarifs
+          Encaissement
           <template #child>
             <ul>
-              <DrawerMenuItem path="/tarifs" is-child>
-                Liste des tarifs
+              <DrawerMenuItem path="/encaissement/crediter" is-child>
+                Créditer un compte
               </DrawerMenuItem>
-              <DrawerMenuItem path="/tarifs/new" is-child>
-                Nouveau tarif
+              <DrawerMenuItem path="/encaissement/suivi" is-child>
+                Suivi
               </DrawerMenuItem>
             </ul>
           </template>

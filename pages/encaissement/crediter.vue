@@ -146,7 +146,8 @@ async function findClients() {
     },
     populate: {
       adresse: true,
-      factures: true
+      factures: true,
+      tournee: true
     }
   })
 }
@@ -180,10 +181,24 @@ async function encaisserSomme() {
   }
   let aEncaisser = Math.abs(montantAEncaisser.value)
 
+  const user = useStrapiUser()
+  const responsable = (await find<UserDetail>('user-details', {
+    filters: {
+      saep: saepStore.saep.id,
+      user: user.value?.id
+    },
+    populate: {
+      user_role: true
+    }
+  })).data.at(0)
+
   await create<HistoriqueEncaissement>('historique-encaissements', {
     client: clientSelectionne.value?.id,
     date: Date.now(),
-    montant: aEncaisser
+    montant: aEncaisser,
+    saep: saepStore.saep.id,
+    tournee: (clientSelectionne.value?.attributes.tournee as Strapi4ResponseSingle<Tournee>).data.id,
+    user_detail: responsable?.id
   })
 
   for (let facture of facturesNonRegles.value as Strapi4ResponseData<Facture>[]) {
