@@ -206,10 +206,10 @@ async function encaisserSomme() {
     const encaisse = facture.attributes.encaisse
     if (aEncaisser > 0) {
       await update<Facture>('factures', facture.id, {
-        encaisse: Math.min(montant, aEncaisser),
-        regle: encaisse - montant === 0
+        encaisse: Math.min(montant, aEncaisser + encaisse),
+        regle: aEncaisser + encaisse - montant >= 0
       })
-      aEncaisser -= montant
+      aEncaisser -= montant + encaisse
     }
   }
 
