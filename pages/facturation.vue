@@ -30,9 +30,9 @@
           <TableTd>{{ client.attributes.tel }}</TableTd>
           <TableTd>{{ displayRue(client.attributes.adresse) }}</TableTd>
           <TableTd>{{ displayAdresse(client.attributes.adresse) }}</TableTd>
-          <TableTd>{{ displayDernierIndex(client.attributes.historique_indices) }}</TableTd>
-          <TableTd>{{ displayMontant(client.attributes.factures) }}</TableTd>
-          <TableTd>{{ displayTotal(client.attributes.factures) }}</TableTd>
+          <TableTd>{{ Intl.NumberFormat().format(displayDernierIndex(client.attributes.historique_indices)) }}</TableTd>
+          <TableTd>{{ Intl.NumberFormat().format(displayMontant(client.attributes.factures)) }}</TableTd>
+          <TableTd>{{ Intl.NumberFormat().format(displayTotal(client.attributes.factures)) }}</TableTd>
           <TableTd is-last>
             <Action>
               <IconArrowDownTray />
@@ -59,7 +59,7 @@ useHead({
 
 const saepStore = useSaepStore()
 
-const { find, delete: _delete, create } = useStrapi()
+const { find, delete: _delete, create, update } = useStrapi()
 const tournee = ref()
 
 const tournees = ref(await findTournee())
@@ -83,17 +83,17 @@ function displayAdresse(adresse: Strapi4ResponseSingle<Adresse> | number) {
 }
 
 function displayDernierIndex(historiqueIndices: Strapi4ResponseMany<HistoriqueIndex> | number[]) {
-  return (historiqueIndices as Strapi4ResponseMany<HistoriqueIndex>).data.at(-2)?.attributes.value
+  return (historiqueIndices as Strapi4ResponseMany<HistoriqueIndex>).data.at(-2)?.attributes.value ?? 0
 }
 
 function displayMontant(factures: Strapi4ResponseMany<Facture> | number[]) {
-  return (factures as Strapi4ResponseMany<Facture>).data.at(-1)?.attributes.montant
+  return (factures as Strapi4ResponseMany<Facture>).data.at(-1)?.attributes.montant ?? 0
 }
 
 function displayTotal(factures: Strapi4ResponseMany<Facture> | number[]) {
   return (factures as Strapi4ResponseMany<Facture>).data
     .filter(facture => !facture.attributes.regle)
-    .map(facture => facture.attributes.montant)
+    .map(facture => facture.attributes.montant - facture.attributes.encaisse)
     .reduce((f1, f2) => f1 + f2, 0)
 }
 
@@ -101,7 +101,8 @@ async function findTournee() {
   return await find<Tournee>('tournees', {
     filters: {
       saep: saepStore.saep.id,
-      cloturee: true
+      cloturee: true,
+      facturee: false
     }
   })
 }
@@ -140,27 +141,10 @@ async function genererFactures() {
   clients.value = await findClient()
   const tarifs = await findTarifs()
 
-  const timestamp = Date.now()
-  const date = new Date()
-
-  const firstDate = new Date(date.getFullYear(), date.getMonth(), 1);
-  const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-
-  const factures = await find<Facture>('factures', {
-    filters: {
-      tournee: tournee.value,
-      date: {
-        $gte: firstDate.getTime(),
-        $lte: lastDay.getTime()
-      },
-    }
-  })
-
-  for (let facture of (factures.data as Strapi4ResponseData<Facture>[])) {
-    await _delete<Facture>('factures', facture.id)
-  }
+  const date = Date.now()
 
   for (let client of (clients.value?.data as Strapi4ResponseData<Client>[])) {
+    const solde = client.attributes.solde
     const branchement = client.attributes.branchement as Strapi4ResponseSingle<Branchement>
     const tarif = tarifs.data.find(tarif => (tarif.attributes.branchement as Strapi4ResponseSingle<Branchement>).data.attributes.code == branchement.data.attributes.code)
     const lastIndex = (client.attributes.historique_indices as Strapi4ResponseMany<HistoriqueIndex>).data.at(-1)?.attributes.value
@@ -178,13 +162,23 @@ async function genererFactures() {
   
     await create<Facture>('factures', {
       client: client.id,
-      date: timestamp,
+      date,
       montant,
       regle: false,
-      tournee: tournee.value
+      tournee: tournee.value,
+      encaisse: Math.min(montant, solde)
+    })
+
+    await update<Client>('clients', client.id, {
+      solde: Math.max(0, solde - montant)
     })
   }
 
+  await update<Tournee>('tournees', tournee.value, {
+    facturee: true
+  })
+
+  tournee.value = await findTournee()
   clients.value = await findClient()
 }
 </script>

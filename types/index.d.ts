@@ -59,6 +59,7 @@ declare global {
     label: string
     cloturee: boolean
     terminee: boolean
+    facturee: boolean
     saep: Strapi4ResponseSingle<Saep> | number
     user_detail: Strapi4ResponseSingle<UserDetail> | number
   }
@@ -75,6 +76,7 @@ declare global {
     tel: string
     email: string
     taille_menage: number
+    solde: number
     etat_branchement: Strapi4ResponseSingle<EtatBranchement> | number
     branchement: Strapi4ResponseSingle<Branchement> | number
     adresse: Strapi4ResponseSingle<Adresse> | number
@@ -85,7 +87,9 @@ declare global {
   }
 
   interface Facture {
+    numero: string
     montant: number
+    encaisse: number
     date: number
     regle: boolean
     client: Strapi4ResponseSingle<Client> | number
@@ -93,8 +97,14 @@ declare global {
   }
 
   interface HistoriqueIndex {
-    value: number,
-    date_tournee: number,
+    value: number
+    date_tournee: number
+    client: Strapi4ResponseSingle<Client> | number
+  }
+
+  interface HistoriqueEncaissement {
+    montant: number
+    date: number
     client: Strapi4ResponseSingle<Client> | number
   }
 
