@@ -58,7 +58,8 @@ async function findHistoriqueEncaissements() {
       client: true,
       tournee: true,
       user_detail: true
-    }
+    },
+    sort: 'date:desc'
   })
 }
 
