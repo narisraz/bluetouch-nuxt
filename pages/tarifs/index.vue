@@ -28,6 +28,7 @@
         </TableThead>
         <tbody>
           <tr v-for="tarif in tarifs.data" :key="tarif.id">
+            <TableTd>{{ displayBranchement(tarif.attributes.branchement) }}</TableTd>
             <TableTd>{{ tarif.attributes.prix_base }}</TableTd>
             <TableTd>{{ tarif.attributes.prix_1 }}</TableTd>
             <TableTd>{{ tarif.attributes.volume_1 }}</TableTd>
