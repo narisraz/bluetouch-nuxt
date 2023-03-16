@@ -95,6 +95,7 @@ declare global {
     regle: boolean
     client: Strapi4ResponseSingle<Client> | number
     tournee: Strapi4ResponseSingle<Tournee> | number
+    saep: Strapi4ResponseSingle<Saep> | number
   }
 
   interface HistoriqueIndex {

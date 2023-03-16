@@ -165,7 +165,8 @@ async function genererFactures() {
       montant,
       regle: false,
       tournee: tournee.value,
-      encaisse: Math.min(montant, solde)
+      encaisse: Math.min(montant, solde),
+      saep: saep.id
     })
 
     await update<Client>('clients', client.id, {
