@@ -84,6 +84,7 @@ declare global {
     tournee: Strapi4ResponseSingle<Tournee> | number
     historique_indices: Strapi4ResponseMany<HistoriqueIndex> | number[]
     factures: Strapi4ResponseMany<Facture> | number[]
+    saep: Strapi4ResponseSingle<Saep> | number
   }
 
   interface Facture {

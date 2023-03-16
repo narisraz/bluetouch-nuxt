@@ -96,9 +96,9 @@ const tourneesOptions: Option[] = tournees.data.map(t => ({
   value: '' + t.id
 })) 
 
-const compteur = ref(compteursOptions[0].value)
-const branchement = ref(branchementsOptions[0].value)
-const tournee = ref("")
+const compteur = ref(compteursOptions[0]?.value)
+const branchement = ref(branchementsOptions[0]?.value)
+const tournee = ref(tourneesOptions[0]?.value)
 const etatBranchement = ref('1')
 const numContrat = ref()
 const nom = ref()
@@ -131,7 +131,9 @@ const onSave = async () => {
     prenom: prenom.value,
     tel: tel.value,
     etat_branchement: Number(etatBranchement.value),
-    taille_menage: Number(tailleMenage)
+    taille_menage: Number(tailleMenage.value),
+    tournee: Number(tournee.value),
+    saep: saep.id,
   })
 
   await navigateTo('/clients')
