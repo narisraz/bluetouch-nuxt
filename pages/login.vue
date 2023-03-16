@@ -66,18 +66,16 @@ const onSubmit = async () => {
         user: user.value?.id
       },
       populate: {
-        saep: true,
+        saep: {
+          populate: {
+            adresse: true,
+            ressources_en_eau: true
+          }
+        },
       }
     })
 
-    const saepId = (userDetailResponse.data.at(0)?.attributes.saep as Strapi4ResponseSingle<Saep>).data.id
-
-    const saep = await findOne<Saep>('saeps', saepId, {
-      populate: {
-        adresse: true,
-        ressources_en_eau: true
-      }
-    })
+    const saep = (userDetailResponse.data.at(0)?.attributes.saep as Strapi4ResponseSingle<Saep>)
 
     const saepStore = useSaepStore()
     saepStore.setSaep({ ...saep.data.attributes, id: saep.data.id})
