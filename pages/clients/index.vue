@@ -49,7 +49,6 @@
 
 <script setup lang="ts">
 import { Strapi4ResponseSingle } from '@nuxtjs/strapi/dist/runtime/types';
-import { useSaepStore } from '~~/store/saep';
 
 definePageMeta({
   layout: 'client',
@@ -61,11 +60,11 @@ useHead({
 })
 
 const { find } = useStrapi()
-const saepStore = useSaepStore()
+const saep = useSaep()
 
 const clients = await find<Client>('clients', {
   filters: {
-    saep: saepStore.saep.id
+    saep: saep.id
   },
   populate: {
     branchement: true,

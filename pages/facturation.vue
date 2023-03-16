@@ -46,7 +46,6 @@
 
 <script setup lang="ts">
 import { Strapi4ResponseData, Strapi4ResponseMany, Strapi4ResponseSingle } from "@nuxtjs/strapi/dist/runtime/types"
-import { useSaepStore } from "~~/store/saep";
 
 definePageMeta({
   layout: 'client',
@@ -57,7 +56,7 @@ useHead({
   title: "Facturation"
 })
 
-const saepStore = useSaepStore()
+const saep = useSaep()
 
 const { find, delete: _delete, create, update } = useStrapi()
 const tournee = ref()
@@ -100,7 +99,7 @@ function displayTotal(factures: Strapi4ResponseMany<Facture> | number[]) {
 async function findTournee() {
   return await find<Tournee>('tournees', {
     filters: {
-      saep: saepStore.saep.id,
+      saep: saep.id,
       cloturee: true,
       facturee: false
     }
@@ -113,7 +112,7 @@ async function findClient() {
   }
   return await find<Client>('clients', {
     filters: {
-      saep: saepStore.saep.id,
+      saep: saep.id,
       tournee: tournee.value
     },
     populate: {
@@ -129,7 +128,7 @@ async function findClient() {
 async function findTarifs() {
   return await find<Tarif>('tarifs', {
     filters: {
-      saep: saepStore.saep.id
+      saep: saep.id
     },
     populate: {
       branchement: true

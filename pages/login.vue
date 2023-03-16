@@ -10,7 +10,7 @@
             Email ou mot de passe erroné
           </ContainerAlertError>
 
-          <FormTextfield v-model="email" label="Email" name="email" type="email" placeholder="Entrez votre adresse email">
+          <FormTextfield v-model="email" label="Email" name="email" type="text" placeholder="Entrez votre adresse email">
             <template #prefixIcon>
               <IconLockClosed class="w-4 h-4" />
             </template>
@@ -40,7 +40,6 @@
 
 <script setup lang="ts">
 import { Strapi4ResponseSingle } from "@nuxtjs/strapi/dist/runtime/types";
-import { useSaepStore } from "~/store/saep"
 
 useHead({
   title: "Connexion"
@@ -77,8 +76,7 @@ const onSubmit = async () => {
 
     const saep = (userDetailResponse.data.at(0)?.attributes.saep as Strapi4ResponseSingle<Saep>)
 
-    const saepStore = useSaepStore()
-    saepStore.setSaep({ ...saep.data.attributes, id: saep.data.id})
+    useSaep({ ...saep.data.attributes, id: saep.data.id})
 
     return navigateTo('/home')
   } catch (e) {

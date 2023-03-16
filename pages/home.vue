@@ -42,8 +42,6 @@
 </template>
 
 <script setup lang="ts">
-import { useSaepStore } from "~/store/saep"
-
 definePageMeta({
   middleware: 'auth',
   layout: 'client'
@@ -53,8 +51,7 @@ useHead({
   title: "Système d'Alimentation en Eau Potable (SAEP)"
 })
 
-const saepStore = useSaepStore()
-const saep = saepStore.saep
+const saep = useSaep()
 
 const ressourcesEnEau = saep.ressources_en_eau.data
   .map(val => val.attributes.label)

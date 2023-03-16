@@ -34,8 +34,6 @@
 </template>
 
 <script setup lang="ts">
-import { useSaepStore } from '~~/store/saep';
-
 definePageMeta({
   layout: 'client',
   middleware: 'auth'
@@ -45,8 +43,7 @@ useHead({
   title: "Indicateurs techniques et financiers"
 })
 
-const saepStore = useSaepStore()
-const saep = saepStore.saep
+const saep = useSaep()
 
 const { find } = useStrapi()
 

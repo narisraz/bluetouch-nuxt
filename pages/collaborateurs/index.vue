@@ -39,8 +39,6 @@
 
 <script setup lang="ts">
 import { Strapi4ResponseSingle, StrapiUser } from '@nuxtjs/strapi/dist/runtime/types';
-import { useSaepStore } from '~~/store/saep';
-
 definePageMeta({
   layout: 'client',
   middleware: 'auth'
@@ -51,11 +49,11 @@ useHead({
 })
 
 const { find } = useStrapi()
-const saepStore = useSaepStore()
+const saep = useSaep()
 
 const collaborateurs = await find<UserDetail>('user-details', {
   filters: {
-    saep: saepStore.saep.id
+    saep: saep.id
   },
   populate: {
     user_role: true,

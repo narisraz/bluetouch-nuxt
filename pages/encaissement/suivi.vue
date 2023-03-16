@@ -33,8 +33,6 @@
 
 <script setup lang="ts">
 import { Strapi4ResponseSingle } from '@nuxtjs/strapi/dist/runtime/types';
-import { useSaepStore } from '~~/store/saep';
-
 definePageMeta({
   layout: 'client',
   middleware: 'auth'
@@ -45,14 +43,14 @@ useHead({
 })
 
 const { find } = useStrapi()
-const saepStore = useSaepStore()
+const saep = useSaep()
 
 const historiqueEncaissements = ref(await findHistoriqueEncaissements())
 
 async function findHistoriqueEncaissements() {
   return await find<HistoriqueEncaissement>('historique-encaissements', {
     filters: {
-      saep: saepStore.saep.id
+      saep: saep.id
     },
     populate: {
       client: true,

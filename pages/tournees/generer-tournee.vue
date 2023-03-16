@@ -37,8 +37,6 @@
 
 <script setup lang="ts">
 import { Strapi4ResponseMany, Strapi4ResponseSingle } from '@nuxtjs/strapi/dist/runtime/types';
-import { useSaepStore } from '~~/store/saep';
-
 definePageMeta({
   layout: 'client',
   middleware: 'auth'
@@ -49,11 +47,11 @@ useHead({
 })
 
 const { find, create, update } = useStrapi()
-const saepStore = useSaepStore()
+const saep = useSaep()
 
 const tournees = await find<Tournee>('tournees', {
   filters: {
-    saep: saepStore.saep.id
+    saep: saep.id
   }
 })
 const tourneesOptions: Option[] = tournees.data.map(t => ({
@@ -63,7 +61,7 @@ const tourneesOptions: Option[] = tournees.data.map(t => ({
 
 const responsables = await find<UserDetail>('user-details', {
   filters: {
-    saep: saepStore.saep.id,
+    saep: saep.id,
   },
   populate: {
     user_role: true

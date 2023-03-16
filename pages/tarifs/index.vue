@@ -45,8 +45,6 @@
 
 <script setup lang="ts">
 import { Strapi4ResponseSingle } from '@nuxtjs/strapi/dist/runtime/types';
-import { useSaepStore } from '~~/store/saep';
-
 definePageMeta({
   layout: 'client',
   middleware: 'auth'
@@ -56,12 +54,12 @@ useHead({
   title: "Liste des tarifs"
 })
 
-const saepStore = useSaepStore()
+const saep = useSaep()
 const { find } = useStrapi()
 
 const tarifs = await find<Tarif>('tarifs', {
   filters: {
-    saep: saepStore.saep.id
+    saep: saep.id
   },
   populate: {
     branchement: true

@@ -43,8 +43,6 @@
 </template>
 
 <script setup lang="ts">
-import { useSaepStore } from '~~/store/saep';
-
 definePageMeta({
   layout: 'client',
   middleware: 'auth'
@@ -55,14 +53,14 @@ useHead({
 })
 
 const { find, update } = useStrapi()
-const saepStore = useSaepStore()
+const saep = useSaep()
 
 const tournees = ref(await findTournees())
 
 async function findTournees() {
   return await find<Tournee>('tournees', {
     filters: {
-      saep: saepStore.saep.id
+      saep: saep.id
     }
   })
 }

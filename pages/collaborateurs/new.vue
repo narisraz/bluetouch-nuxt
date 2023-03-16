@@ -19,8 +19,6 @@
 </template>
 
 <script setup lang="ts">
-import { useSaepStore } from '~~/store/saep';
-
 definePageMeta({
   layout: 'client',
   middleware: 'auth'
@@ -32,7 +30,7 @@ useHead({
 
 const { create, find } = useStrapi()
 const { register } = useStrapiAuth()
-const saepStore = useSaepStore()
+const saep = useSaep()
 
 const roles = await find<Role>('user-roles')
 const rolesOptions: Option[] = roles.data.map(r => ({
@@ -59,7 +57,7 @@ const onSave = async () => {
     nom: nom.value,
     prenom: prenom.value,
     tel: tel.value,
-    saep: saepStore.saep.id,
+    saep: saep.id,
     user: auth.user.value?.id,
     user_role: userRole.value
   })

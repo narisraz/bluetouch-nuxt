@@ -66,7 +66,6 @@
 
 <script setup lang="ts">
 import { Strapi4ResponseMany, Strapi4ResponseSingle } from "@nuxtjs/strapi/dist/runtime/types"
-import { useSaepStore } from "~~/store/saep"
 
 definePageMeta({
   layout: 'client',
@@ -78,7 +77,7 @@ useHead({
 })
 
 const { find, update } = useStrapi()
-const saepStore = useSaepStore()
+const saep = useSaep()
 const selectedClientId = ref()
 const selectedDernierIndexId = ref()
 const newIndex = ref()
@@ -119,7 +118,7 @@ function displayNouvelIndex(historiqueIndices: Strapi4ResponseMany<HistoriqueInd
 async function findTournee() {
   return await find<Tournee>('tournees', {
     filters: {
-      saep: saepStore.saep.id,
+      saep: saep.id,
       cloturee: false
     }
   })
@@ -131,7 +130,7 @@ async function findClient() {
   }
   return await find<Client>('clients', {
     filters: {
-      saep: saepStore.saep.id,
+      saep: saep.id,
       tournee: tournee.value
     },
     populate: {

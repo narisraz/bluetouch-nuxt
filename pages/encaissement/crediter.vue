@@ -102,8 +102,6 @@
 
 <script setup lang="ts">
 import { Strapi4ResponseData, Strapi4ResponseMany, Strapi4ResponseSingle } from '@nuxtjs/strapi/dist/runtime/types';
-import { useSaepStore } from '~~/store/saep';
-
 definePageMeta({
   layout: 'client',
   middleware: 'auth'
@@ -113,7 +111,7 @@ useHead({
   title: "Encaissement"
 })
 
-const saepStore = useSaepStore()
+const saep = useSaep()
 
 const { find, update, create } = useStrapi()
 
@@ -128,7 +126,7 @@ const facturesNonRegles = ref<Strapi4ResponseData<Facture>[]>()
 async function findClients() {
   clients.value = await find<Client>('clients', {
     filters: {
-      saep: saepStore.saep.id,
+      saep: saep.id,
       $or: [
         {num_contrat: {
           $contains: contrat.value
@@ -184,7 +182,7 @@ async function encaisserSomme() {
   const user = useStrapiUser()
   const responsable = (await find<UserDetail>('user-details', {
     filters: {
-      saep: saepStore.saep.id,
+      saep: saep.id,
       user: user.value?.id
     },
     populate: {
@@ -196,7 +194,7 @@ async function encaisserSomme() {
     client: clientSelectionne.value?.id,
     date: Date.now(),
     montant: aEncaisser,
-    saep: saepStore.saep.id,
+    saep: saep.id,
     tournee: (clientSelectionne.value?.attributes.tournee as Strapi4ResponseSingle<Tournee>).data.id,
     user_detail: responsable?.id
   })

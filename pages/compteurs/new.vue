@@ -14,8 +14,6 @@
 </template>
 
 <script setup lang="ts">
-import { useSaepStore } from '~~/store/saep';
-
 definePageMeta({
   layout: 'client',
   middleware: 'auth'
@@ -26,14 +24,14 @@ useHead({
 })
 
 const { create } = useStrapi()
-const saepStore = useSaepStore()
+const saep = useSaep()
 
 const identifiant = ref()
 
 const onSave = async () => {
   await create<Compteur>('compteurs', {
     identifiant: identifiant.value,
-    saep: saepStore.saep.id
+    saep: saep.id
   })
 
   await navigateTo('/compteurs')
