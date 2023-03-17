@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
-    '@nuxtjs/strapi',
+    '@narisraz/nuxt-strapi',
     [
       '@pinia/nuxt',
       {

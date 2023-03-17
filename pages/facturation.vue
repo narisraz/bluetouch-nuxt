@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { Strapi4ResponseData, Strapi4ResponseMany, Strapi4ResponseSingle } from "@nuxtjs/strapi/dist/runtime/types"
+import { Strapi4ResponseData, Strapi4ResponseMany, Strapi4ResponseSingle } from "@narisraz/nuxt-strapi/dist/runtime/types"
 
 definePageMeta({
   layout: 'client',

@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { Strapi4ResponseSingle, StrapiUser } from '@nuxtjs/strapi/dist/runtime/types';
+import { Strapi4ResponseSingle, StrapiUser } from '@narisraz/nuxt-strapi/dist/runtime/types';
 definePageMeta({
   layout: 'client',
   middleware: 'auth'

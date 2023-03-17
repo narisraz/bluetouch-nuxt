@@ -8,7 +8,7 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@nuxtjs/strapi": "^1.8.1",
+    "@narisraz/nuxt-strapi": "^1.9.0",
     "@nuxtjs/tailwindcss": "^6.3.1",
     "@types/node": "^18.13.0",
     "nuxt": "^3.1.2"
