@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { Strapi4ResponseMany, Strapi4ResponseSingle } from "@narisraz/nuxt-strapi/dist/runtime/types"
+import { Strapi4ResponseData, Strapi4ResponseMany, Strapi4ResponseSingle } from "@narisraz/nuxt-strapi/dist/runtime/types"
 
 definePageMeta({
   layout: 'client',
@@ -76,7 +76,7 @@ useHead({
   title: "Relevé index"
 })
 
-const { find, update } = useStrapi()
+const { find, update, create } = useStrapi()
 const saep = useSaep()
 const selectedClientId = ref()
 const selectedDernierIndexId = ref()
@@ -103,16 +103,24 @@ function displayAdresse(adresse: Strapi4ResponseSingle<Adresse> | number) {
   return (adresse as Strapi4ResponseSingle<Adresse>).data.attributes.adresse
 }
 
+function historiqueIndexValide(historiqueIndex: Strapi4ResponseData<HistoriqueIndex>) {
+  return historiqueIndex.attributes.valide === true
+}
+
+function historiqueIndexNonValide(historiqueIndex: Strapi4ResponseData<HistoriqueIndex>) {
+  return historiqueIndex.attributes.valide === false
+}
+
 function displayDernierIndex(historiqueIndices: Strapi4ResponseMany<HistoriqueIndex> | number[]) {
-  return (historiqueIndices as Strapi4ResponseMany<HistoriqueIndex>).data.at(-2)?.attributes.value
+  return (historiqueIndices as Strapi4ResponseMany<HistoriqueIndex>).data.filter(historiqueIndexValide).at(-1)?.attributes.value
 }
 
 function getIdDerniereIndex(historiqueIndices: Strapi4ResponseMany<HistoriqueIndex> | number[]) {
-  return (historiqueIndices as Strapi4ResponseMany<HistoriqueIndex>).data.at(-1)?.id
+  return (historiqueIndices as Strapi4ResponseMany<HistoriqueIndex>).data.filter(historiqueIndexNonValide).at(-1)?.id
 }
 
 function displayNouvelIndex(historiqueIndices: Strapi4ResponseMany<HistoriqueIndex> | number[]) {
-  return (historiqueIndices as Strapi4ResponseMany<HistoriqueIndex>).data.at(-1)?.attributes.value
+  return (historiqueIndices as Strapi4ResponseMany<HistoriqueIndex>).data.filter(historiqueIndexNonValide).at(0)?.attributes.value
 }
 
 async function findTournee() {
@@ -156,9 +164,20 @@ function closeModal() {
 }
 
 async function saveNewIndex() {
-  await update<HistoriqueIndex>('historique-indices', selectedDernierIndexId.value, {
-    value: newIndex.value
-  })
+  if (!selectedDernierIndexId.value) {
+    await create<HistoriqueIndex>('historique-indices', {
+      value: newIndex.value,
+      valide: false,
+      client: selectedClientId.value,
+      date_tournee: Date.now(),
+      tournee: tournee.value
+    }, useHeaders())
+  } else {
+    await update<HistoriqueIndex>('historique-indices', selectedDernierIndexId.value, {
+      value: newIndex.value,
+      date_tournee: Date.now()
+    }, useHeaders())
+  }
 
   clients.value = await findClient()
   closeModal()
@@ -169,9 +188,12 @@ async function startTournee() {
 }
 
 async function terminerTournee() {
+  await update('historique-indices/validate', '', {
+    tournee: tournee.value
+  }, useHeaders())
   await update<Tournee>('tournees', tournee.value, {
     terminee: true
-  })
+  }, useHeaders())
 
   tournees.value = await findTournee()
   tournee.value = undefined

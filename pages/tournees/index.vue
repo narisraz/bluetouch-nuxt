@@ -72,7 +72,7 @@ function displayCount(pagination: any) {
 async function cloturerTournee(id: number, value: boolean) {
   await update<Tournee>('tournees', id, {
     cloturee: value
-  })
+  }, useHeaders())
 
   tournees.value = await findTournees()
 }

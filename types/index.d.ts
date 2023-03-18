@@ -102,6 +102,8 @@ declare global {
     value: number
     date_tournee: number
     client: Strapi4ResponseSingle<Client> | number
+    valide: boolean
+    tournee: Strapi4ResponseSingle<Tournee> | number
   }
 
   interface HistoriqueEncaissement {
