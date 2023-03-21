@@ -78,7 +78,7 @@ const onSubmit = async () => {
 
     useSaep({ ...saep.data.attributes, id: saep.data.id})
 
-    return navigateTo('/home')
+    return navigateTo('/')
   } catch (e) {
     showAlert.value = true
   }

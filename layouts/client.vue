@@ -3,7 +3,7 @@
     <div class="w-96 bg-surface text-on-surface h-screen p-4 border border-r-2 border-background overflow-y-auto">
       <div class="font-bold text-lg mb-4">Bluetouch</div>
       <ul>
-        <DrawerMenuItem path="/home">
+        <DrawerMenuItem path="/">
           <template #icon>
             <IconHome />
           </template>
