@@ -2,7 +2,7 @@
   <div class="flex justify-center items-center h-screen">
     <ContainerCard class="w-2/6">
       <div class="text-5xl font-bold my-8">
-        Login
+        Connexion
       </div>
       <form @submit.prevent="onSubmit" method="post">
         <div class="space-y-4">
