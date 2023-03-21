@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { Strapi4ResponseData, Strapi4ResponseMany, Strapi4ResponseSingle } from "@narisraz/nuxt-strapi/dist/runtime/types"
+import { Strapi4ResponseMany, Strapi4ResponseSingle } from "@narisraz/nuxt-strapi/dist/runtime/types"
 
 definePageMeta({
   layout: 'client',
@@ -107,9 +107,6 @@ async function findTournee() {
 }
 
 async function findClient() {
-  if (!tournee.value) {
-    return;
-  }
   return await find<Client>('clients', {
     filters: {
       saep: saep.id,
@@ -125,60 +122,11 @@ async function findClient() {
   })
 }
 
-async function findTarifs() {
-  return await find<Tarif>('tarifs', {
-    filters: {
-      saep: saep.id
-    },
-    populate: {
-      branchement: true
-    }
-  })
-}
-
 async function genererFactures() {
-  clients.value = await findClient()
-  const tarifs = await findTarifs()
-
-  const date = Date.now()
-
-  for (let client of (clients.value?.data as Strapi4ResponseData<Client>[])) {
-    const solde = client.attributes.solde
-    const branchement = client.attributes.branchement as Strapi4ResponseSingle<Branchement>
-    const tarif = tarifs.data.find(tarif => (tarif.attributes.branchement as Strapi4ResponseSingle<Branchement>).data.attributes.code == branchement.data.attributes.code)
-    const lastIndex = (client.attributes.historique_indices as Strapi4ResponseMany<HistoriqueIndex>).data.at(-1)?.attributes.value
-    
-    let montant = tarif!.attributes.prix_base
-    if (lastIndex! < tarif!.attributes.volume_1) {
-      montant += tarif!.attributes.prix_1
-    }
-    if (lastIndex! < tarif!.attributes.volume_2) {
-      montant += tarif!.attributes.prix_2
-    }
-    if (lastIndex! < tarif!.attributes.volume_3) {
-      montant += tarif!.attributes.prix_3
-    }
+  await update<Facture>('factures/validate', '', {
+    tournee: tournee.value,
+  }, useHeaders())
   
-    await create<Facture>('factures', {
-      client: client.id,
-      date,
-      montant,
-      regle: false,
-      tournee: tournee.value,
-      encaisse: Math.min(montant, solde),
-      saep: saep.id
-    })
-
-    await update<Client>('clients', client.id, {
-      solde: Math.max(0, solde - montant)
-    })
-  }
-
-  await update<Tournee>('tournees', tournee.value, {
-    facturee: true
-  })
-
-  tournee.value = await findTournee()
   clients.value = await findClient()
 }
 </script>
