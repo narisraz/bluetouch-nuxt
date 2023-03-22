@@ -20,8 +20,5 @@ export default defineNuxtConfig({
         url: 'http://localhost:1337' // can be overridden by NUXT_PUBLIC_STRAPI_URL environment variable
       },
     }
-  },
-  app: {
-    baseURL: '/web/'
   }
 })
